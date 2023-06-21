@@ -68,6 +68,7 @@ class _VisitsScreenState extends State<VisitsScreen> {
         authController.token.value,
       ),
     ]);
+
     Util.dismiss();
   }
 
@@ -167,18 +168,28 @@ class _VisitsScreenState extends State<VisitsScreen> {
                         children: [
                           ScheduleListing(
                             onRefresh: () async {
+                              // Assigning Date
+                              var dateForApi = DateFormat('MM-dd-yyyy')
+                                  .format(selectedDate.value)
+                                  .toString()
+                                  .replaceAll('-', '/');
+                              getDate.value = dateForApi;
+                              // devtools.log("pakistan: " + getDate.value);
+                              // Calling Api
                               AuthController authController = Get.find();
-                              await jobController.getPendingJobList(
-                                getDate.value,
+                              await Get.find<JobController>().getPendingJobList(
                                 "12",
+                                getDate.value,
                                 authController.token.value,
                               );
+                              await Future.delayed(
+                                  const Duration(seconds: 2), () {});
                             },
                             height: 310.h,
                             isLoading: jobController.isLoading.value,
-                            fromWhichVisit: FromWhichVisit.assignedVisits,
-                            listLength: jobController.assignedJobsList.length,
-                            list: jobController.assignedJobsList,
+                            fromWhichVisit: FromWhichVisit.pending,
+                            listLength: jobController.pendingJobsList.length,
+                            list: jobController.pendingJobsList,
                           ),
                           ScheduleListing(
                             onRefresh: () async {

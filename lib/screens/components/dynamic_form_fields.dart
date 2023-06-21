@@ -691,7 +691,9 @@ class _DynamicFormDropdownFieldState extends State<DynamicFormDropdownField> {
                   onSaved: widget.onSaved,
                   validator: widget.validator,
                   hint: Text(
-                    "Select ${widget.title}",
+                    widget.defaultText == ""
+                        ? "Select ${widget.title}"
+                        : widget.defaultText,
                     style: const TextStyle(overflow: TextOverflow.ellipsis),
                     maxLines: 1,
                   ),

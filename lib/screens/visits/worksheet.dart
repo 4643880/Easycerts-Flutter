@@ -26,7 +26,7 @@ class _WorksheetsState extends State<Worksheets> {
     return null;
   }
 
-  List myData = [];
+  dynamic myData;
 
   List<Tab> tabList = [
     Tab(
@@ -52,21 +52,16 @@ class _WorksheetsState extends State<Worksheets> {
     ),
   ];
 
-  @override
-  void initState() {
-    getDataFromLocalStorage();
-    super.initState();
-  }
-
   List<dynamic> temporaryList = [];
   getDataFromLocalStorage() async {
     temporaryList.clear();
     await funcToFechData();
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 2));
     // devtools.log("2: " + DateTime.now().toString());
     setState(() {
       myData = temporaryList;
     });
+    devtools.log(myData.toString());
   }
 
   Future funcToFechData() async {
@@ -78,6 +73,14 @@ class _WorksheetsState extends State<Worksheets> {
       temporaryList.add(eachElement);
       // devtools.log("1: " + DateTime.now().toString());
     });
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      getDataFromLocalStorage();
+    });
+    super.initState();
   }
 
   @override
@@ -191,7 +194,7 @@ class _WorksheetsState extends State<Worksheets> {
                 },
                 child: ListView(
                   children: [
-                    myData.isNotEmpty && myData != null
+                    myData != null && myData.length > 0
                         ? ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
@@ -257,7 +260,9 @@ class _WorksheetsState extends State<Worksheets> {
                         : Padding(
                             padding: EdgeInsets.only(top: 320.h),
                             child: const Center(
-                              child: Text("No Worksheets Available"),
+                              child: Text(
+                                "No Worksheets Available",
+                              ),
                             ),
                           ),
                   ],

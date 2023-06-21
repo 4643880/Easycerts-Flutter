@@ -5,6 +5,7 @@ import 'package:easy_certs/screens/pdf_view/pdf_view.dart';
 import 'package:easy_certs/screens/reject_job/reject_job.dart';
 import 'package:easy_certs/screens/splash/splash_screen.dart';
 import 'package:easy_certs/screens/visits/visit_detail.dart';
+import 'package:easy_certs/utils/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,8 +35,14 @@ class Routes {
     GetPage(name: routeDashboard, page: () => const TKDismiss(Dashboard())),
     GetPage(
         name: routeWorksheetsDetail,
-        page: () => const TKDismiss(WorksheetsDetailScreen())),
-    GetPage(name: routeVisitDetail, page: () => TKDismiss(VisitDetail())),
+        page: () => const TKDismiss(WorksheetsDetailScreen()),
+        binding: BindingsBuilder(() {
+          Util.showLoading("Please Wait From Binding...");
+        })),
+    GetPage(
+      name: routeVisitDetail,
+      page: () => TKDismiss(VisitDetail()),
+    ),
     GetPage(
         name: routeImageView,
         page: () => TKDismiss(

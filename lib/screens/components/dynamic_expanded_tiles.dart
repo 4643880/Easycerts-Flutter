@@ -31,29 +31,25 @@ class _DynamicExpandedTilesState extends State<DynamicExpandedTiles> {
 
   @override
   void initState() {
-    setState(() {
-      isLoading = true;
-    });
-    Util.showLoading("Please Wait...");
-    getDataFromLocalStorage().then((value) {
-      Util.dismiss();
-      setState(() {
-        isLoading = false;
-      });
-    });
-
+    getDataFromLocalStorage();
     super.initState();
   }
 
   List<dynamic> temporaryList = [];
   getDataFromLocalStorage() async {
+    Util.showLoading("Loading Data...");
+    setState(() {
+      isLoading = true;
+    });
     temporaryList.clear();
     await funcToFechData();
     await Future.delayed(const Duration(seconds: 1));
-    devtools.log("2: " + DateTime.now().toString());
+    // devtools.log("2: " + DateTime.now().toString());
     setState(() {
       myData = temporaryList;
+      isLoading = false;
     });
+    Util.dismiss();
   }
 
   Future funcToFechData() async {
@@ -63,7 +59,7 @@ class _DynamicExpandedTilesState extends State<DynamicExpandedTiles> {
       final eachElement = await Boxes.getSavedWorkSpaceData().get(element);
       // devtools.log(eachElement.toString());
       temporaryList.add(eachElement);
-      devtools.log("1: " + DateTime.now().toString());
+      // devtools.log("1: " + DateTime.now().toString());
     });
   }
 

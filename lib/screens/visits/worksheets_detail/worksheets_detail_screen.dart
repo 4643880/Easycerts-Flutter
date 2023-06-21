@@ -38,16 +38,11 @@ class _WorksheetsDetailScreenState extends State<WorksheetsDetailScreen> {
     super.dispose();
   }
 
-  List myData = [];
-
-  @override
-  void initState() {
-    getDataFromLocalStorage();
-    super.initState();
-  }
+  dynamic myData;
 
   List<dynamic> temporaryList = [];
   getDataFromLocalStorage() async {
+    Util.showLoading("Loading Data...");
     temporaryList.clear();
     await funcToFechData();
     await Future.delayed(const Duration(seconds: 1));
@@ -55,6 +50,7 @@ class _WorksheetsDetailScreenState extends State<WorksheetsDetailScreen> {
     setState(() {
       myData = temporaryList;
     });
+    Util.dismiss();
   }
 
   Future funcToFechData() async {
@@ -66,6 +62,14 @@ class _WorksheetsDetailScreenState extends State<WorksheetsDetailScreen> {
       temporaryList.add(eachElement);
       // devtools.log("1: " + DateTime.now().toString());
     });
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      getDataFromLocalStorage();
+    });
+    super.initState();
   }
 
   @override
@@ -107,37 +111,63 @@ class _WorksheetsDetailScreenState extends State<WorksheetsDetailScreen> {
                   for (var e4 in list) {
                     if (e3["key"] == e4.f_name && e3["type"] == e4.f_type) {
                       e3["default"] = e4.f_value;
-                      devtools.log(e3["default"].toString() +
-                          "===" +
-                          e4.f_value.toString());
                     }
                   }
                 }
               }
             }
 
-            var uuid = const Uuid().v1();
+            devtools.log(selectedWorkSheet.toString());
+
+            // var uuid = const Uuid().v1();
             List? emptyList = [];
             emptyList = Boxes.getKeysOfWorkSpaceData().get('keysOfList') ?? [];
-            emptyList?.add(uuid);
+            if (emptyList!.contains(workSheetIdentifier)) {
+              emptyList.remove(workSheetIdentifier);
+            }
+            emptyList.add(workSheetIdentifier);
             Boxes.getKeysOfWorkSpaceData().put('keysOfList', emptyList);
 
-            await Boxes.getSavedWorkSpaceData().put(uuid, {
-              "selectedJobId": selectedJobId,
-              "workSheetIdentifier": workSheetIdentifier,
-              "worksheetData": selectedWorkSheet,
-            });
+            // await Boxes.getSavedWorkSpaceData().put(workSheetIdentifier, {
+            //   "selectedJobId": selectedJobId,
+            //   "workSheetIdentifier": workSheetIdentifier,
+            //   "worksheetData": selectedWorkSheet,
+            // });
 
-            List? listOfKeys = Boxes.getKeysOfWorkSpaceData().get('keysOfList');
+            final gettingData =
+                Boxes.getSavedWorkSpaceData().get(workSheetIdentifier);
+            if (gettingData == null) {
+              await Boxes.getSavedWorkSpaceData().put(workSheetIdentifier, {
+                "selectedJobId": selectedJobId,
+                "workSheetIdentifier": workSheetIdentifier,
+                "worksheetData": selectedWorkSheet,
+              });
+            } else {
+              await Boxes.getSavedWorkSpaceData().delete(workSheetIdentifier);
+              await Boxes.getSavedWorkSpaceData().put(workSheetIdentifier, {
+                "selectedJobId": selectedJobId,
+                "workSheetIdentifier": workSheetIdentifier,
+                "worksheetData": selectedWorkSheet,
+              });
+            }
 
-            devtools.log(listOfKeys.toString());
+            final data =
+                await Boxes.getSavedWorkSpaceData().get(workSheetIdentifier);
+            devtools.log(data.toString());
+
+            // List? listOfKeys = Boxes.getKeysOfWorkSpaceData().get('keysOfList');
+
+            // devtools.log(listOfKeys.toString());
 
             // ===========================
             // Deleting From Local Storage
-            // listOfKeys?.forEach((element) {
-            //   Boxes.getSavedWorkSpaceData().delete(element);
-            // });
-            // Boxes.getKeysOfWorkSpaceData().delete("keysOfList");
+            // List keys = Boxes.getKeysOfWorkSpaceData().get('keysOfList');
+            // for (final value in keys) {
+            //   await Boxes.getSavedWorkSpaceData().delete(value);
+            // }
+            // Boxes.getKeysOfWorkSpaceData().delete('keysOfList');
+            // devtools.log(keys.toString());
+
             // ===========================
 
             await Future.delayed(const Duration(seconds: 1), () {
@@ -148,9 +178,9 @@ class _WorksheetsDetailScreenState extends State<WorksheetsDetailScreen> {
             jobController.updateSelectedWorksheet(tempList[0]);
 
             await getDataFromLocalStorage();
-            setState(() {});
             Get.back();
             Util.dismiss();
+            setState(() {});
           },
           onPressed2: () async {
             Util.showLoading("Uploading Data");

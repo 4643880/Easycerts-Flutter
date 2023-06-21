@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
+import 'dart:developer' as devtools show log;
 import '../../../config/routes.dart';
 import '../../components/Custom_Icon_and_text.dart';
 
@@ -164,6 +164,8 @@ class ScheduleListing extends StatelessWidget {
                                 onPressed: () {
                                   JobController jobController = Get.find();
                                   jobController.changeSelectedJob(list[index]);
+                                  devtools.log(
+                                      jobController.selectedJob.toString());
                                   Get.toNamed(routeVisitDetail);
                                 },
                                 child: Text(
