@@ -2,18 +2,19 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
-
 import 'package:easy_certs/constants.dart';
 import 'package:easy_certs/controller/job_controller.dart';
+import 'package:easy_certs/model/validation_model.dart';
 import 'package:easy_certs/model/worksheet_data_submit_model.dart';
 import 'package:easy_certs/model/worksheet_image_rendered_model.dart';
 import 'package:easy_certs/theme/text_styles.dart';
+import 'package:easy_certs/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
-
+import 'dart:developer' as devtools show log;
 import '../../helper/app_colors.dart';
 import '../../utils/extra_function.dart';
 import 'input_with_inner_label.dart';
@@ -32,9 +33,10 @@ class DynamicFormFields extends StatefulWidget {
     required this.defaultText,
     required this.required,
     required this.list_options,
+    required this.expandedTileIndex,
   }) : super(key: key);
 
-  int index;
+  int index, expandedTileIndex;
   String type, title, fieldKey, defaultText, expandedTileName, itemName;
   bool enabled, required;
   Map<String, String>? list_options;
@@ -44,6 +46,7 @@ class DynamicFormFields extends StatefulWidget {
 }
 
 class _DynamicFormFieldsState extends State<DynamicFormFields> {
+  List myList = [];
   @override
   Widget build(BuildContext context) {
     return GetBuilder<JobController>(builder: (jobController) {
@@ -75,9 +78,16 @@ class _DynamicFormFieldsState extends State<DynamicFormFields> {
                     );
                   },
                   validator: (String? value) {
+                    Map<String, Object> myMap = {
+                      "expandedTileName": widget.expandedTileName,
+                      "title": widget.title,
+                    };
                     if (widget.required) {
-                      return simpleValidator(value,
-                          "*${widget.title.isEmpty ? "This field" : widget.title} is required");
+                      return simpleValidator(
+                        value,
+                        "*${widget.title.isEmpty ? "This field" : widget.title} is required",
+                        getMap: myMap,
+                      );
                     } else {
                       return null;
                     }
@@ -111,9 +121,16 @@ class _DynamicFormFieldsState extends State<DynamicFormFields> {
                     );
                   },
                   validator: (String? value) {
+                    Map<String, Object> myMap = {
+                      "expandedTileName": widget.expandedTileName,
+                      "title": widget.title,
+                    };
                     if (widget.required) {
-                      return simpleValidator(value,
-                          "*${widget.title.isEmpty ? "This field" : widget.title} is required");
+                      return simpleValidator(
+                        value,
+                        "*${widget.title.isEmpty ? "This field" : widget.title} is required",
+                        getMap: myMap,
+                      );
                     } else {
                       return null;
                     }
@@ -124,12 +141,12 @@ class _DynamicFormFieldsState extends State<DynamicFormFields> {
           );
         } else if (widget.type == 'select') {
           return DynamicFormDropdownField(
+            defaultText: widget.defaultText,
             index: widget.index,
             type: widget.type,
             enabled: widget.enabled,
             title: widget.title,
             fieldKey: widget.fieldKey,
-            defaultText: widget.defaultText,
             required: widget.required,
             list_options: widget.list_options,
             onSaved: (String? newValue) {
@@ -142,8 +159,17 @@ class _DynamicFormFieldsState extends State<DynamicFormFields> {
             },
             validator: (String? value) {
               if (widget.required) {
-                return simpleValidator(value,
-                    "*${widget.title.isEmpty ? "This field" : widget.title} is required");
+                if (widget.defaultText != widget.defaultText) {
+                  Map<String, Object> myMap = {
+                    "expandedTileName": widget.expandedTileName,
+                    "title": widget.title,
+                  };
+                  return simpleValidator(
+                    value,
+                    "*${widget.title.isEmpty ? "This field" : widget.title} is required",
+                    getMap: myMap,
+                  );
+                }
               } else {
                 return null;
               }
@@ -168,8 +194,15 @@ class _DynamicFormFieldsState extends State<DynamicFormFields> {
             },
             validator: (String? value) {
               if (widget.required) {
-                return simpleValidator(value,
-                    "*${widget.title.isEmpty ? "This field" : widget.title} is required");
+                Map<String, Object> myMap = {
+                  "expandedTileName": widget.expandedTileName,
+                  "title": widget.title,
+                };
+                return simpleValidator(
+                  value,
+                  "*${widget.title.isEmpty ? "This field" : widget.title} is required",
+                  getMap: myMap,
+                );
               } else {
                 return null;
               }
@@ -643,21 +676,22 @@ class _DynamicImagePickerState extends State<DynamicImagePicker> {
 //Dynamic DropDown
 class DynamicFormDropdownField extends StatefulWidget {
   DynamicFormDropdownField({
-    Key? key,
+    super.key,
     required this.index,
     required this.type,
     required this.enabled,
     required this.title,
     required this.fieldKey,
-    required this.defaultText,
     required this.required,
     required this.list_options,
     required this.onSaved,
     required this.validator,
-  }) : super(key: key);
+    required this.defaultText,
+  });
 
   int index;
-  String type, title, fieldKey, defaultText;
+  String type, title, fieldKey;
+  String? defaultText;
   bool enabled, required;
   Map<String, String>? list_options;
   FormFieldValidator<String>? validator;
@@ -670,6 +704,19 @@ class DynamicFormDropdownField extends StatefulWidget {
 
 class _DynamicFormDropdownFieldState extends State<DynamicFormDropdownField> {
   String? selectedValue;
+
+  @override
+  void initState() {
+    if (widget.defaultText != null && widget.defaultText != "") {
+      // devtools.log("it's not null");
+      // devtools.log(widget.defaultText.toString());
+      // selectedValue = widget.defaultText;
+    } else {
+      // devtools.log("it's null");
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return widget.list_options != null
@@ -693,7 +740,7 @@ class _DynamicFormDropdownFieldState extends State<DynamicFormDropdownField> {
                   hint: Text(
                     widget.defaultText == ""
                         ? "Select ${widget.title}"
-                        : widget.defaultText,
+                        : widget.defaultText ?? "",
                     style: const TextStyle(overflow: TextOverflow.ellipsis),
                     maxLines: 1,
                   ),

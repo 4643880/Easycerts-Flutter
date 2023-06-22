@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_certs/controller/job_controller.dart';
 import 'package:easy_certs/helper/app_texts.dart';
+import 'package:easy_certs/model/validation_model.dart';
 import 'package:easy_certs/screens/components/large_button.dart';
 import 'package:easy_certs/utils/util.dart';
 import 'package:flutter/foundation.dart';
@@ -11,16 +12,188 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_sms/flutter_sms.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:new_version/new_version.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-
+import 'dart:developer' as devtools show log;
 import '../constants.dart';
 import '../helper/app_colors.dart';
 import '../theme/text_styles.dart';
+
+Future<void> getPermission() async {
+  final request = await Permission.location.request();
+  if (!request.isGranted) {
+    devtools.log("not granted");
+  } else {
+    devtools.log("granted");
+  }
+}
+
+customDialogForValidationError({
+  required BuildContext context,
+  required bool barrierDismissible,
+  required VoidCallback buttonConfirmOnTap,
+  required VoidCallback buttonConfirmAndOpenMapOnTap,
+  required VoidCallback buttonCancelOnTap,
+  required List<Map> validationErrorsList,
+}) {
+  showGeneralDialog(
+    context: context,
+    barrierDismissible: false,
+    barrierColor: Colors.black.withOpacity(0.5),
+    transitionDuration: const Duration(milliseconds: 700),
+    pageBuilder: (_, __, ___) {
+      return Center(
+        child: Container(
+          width: double.infinity,
+          margin: EdgeInsets.symmetric(horizontal: 20.w),
+          padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(kBorderRadius4),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Validation Errors",
+                style: kTextStyle14Normal.copyWith(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 5.h,
+              ),
+              Text(
+                "Some required Fields are empty!",
+                style: kTextStyle12Normal.copyWith(
+                  color: AppColors.secondary,
+                ),
+              ),
+              SizedBox(
+                height: 5.h,
+              ),
+              MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                child: Container(
+                  height: 300.h,
+                  // color: Colors.red,
+                  child: ListView.builder(
+                    itemCount: validationErrorsList.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      // Map myMap = {
+                      //   "expandedTileName": widget.expandedTileName,
+                      //   "title": widget.title,
+                      // };
+
+                      final eachItem = validationErrorsList[index];
+                      // devtools.log("eachItem => ${eachItem.toString()}");
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          // color: Colors.red,
+                          alignment: Alignment.topLeft,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  eachItem["Expanded Tile Name"] + ":",
+                                  style: kTextStyle14Normal.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 12.0),
+                                child: ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: eachItem["List of Errors"].length,
+                                  itemBuilder: (context, index) => Align(
+                                    alignment: Alignment.topLeft,
+                                    child: RichText(
+                                      text: TextSpan(
+                                        text: "*",
+                                        style:
+                                            const TextStyle(color: Colors.red),
+                                        children: [
+                                          TextSpan(
+                                            text:
+                                                " ${eachItem["List of Errors"][index]} is required",
+                                            style: kTextStyle14Normal.copyWith(
+                                              // fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 30.h,
+              ),
+              CustomLargeButton(
+                onPressed: buttonCancelOnTap,
+                title: AppTexts.cancel.toUpperCase(),
+                bgColor: AppColors.primary,
+                textColor: AppColors.white,
+                borderColor: AppColors.secondary,
+              ),
+              // CustomLargeButton(
+              //   onPressed: buttonCancelOnTap,
+              //   title: AppTexts.cancel.toUpperCase(),
+              //   bgColor: AppColors.white,
+              //   textColor: AppColors.secondary,
+              //   borderColor: AppColors.secondary,
+              // ),
+              SizedBox(
+                height: 20.h,
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+    transitionBuilder: (_, anim, __, child) {
+      Tween<Offset> tween;
+      if (anim.status == AnimationStatus.reverse) {
+        tween = Tween(begin: const Offset(0, -1), end: Offset.zero);
+      } else {
+        tween = Tween(begin: const Offset(0, 1), end: Offset.zero);
+      }
+
+      return SlideTransition(
+        position: tween.animate(anim),
+        child: FadeTransition(
+          opacity: anim,
+          child: child,
+        ),
+      );
+    },
+  );
+}
 
 String? emailValidator(String? value, String? validationError) {
   value = value.toString().trim();
@@ -54,9 +227,15 @@ String? passwordValidator(String? value, String? validationError) {
 //   }
 // }
 
-String? simpleValidator(String? value, String? validationMsg) {
+String? simpleValidator(String? value, String? validationMsg, {Map? getMap}) {
+  // if (Get.find<JobController>()
+  //     .listToCollectValidationErrorsModel
+  //     .contains(model)) {
+  //   Get.find<JobController>().listToCollectValidationErrors.remove(model ?? "");
+  // }
   value = value.toString().trim();
   if (value == 'null' || value.isEmpty) {
+    Get.find<JobController>().listToCollectValidationErrorsModel.add(getMap!);
     return validationMsg ?? "empty_field";
   }
   return null;

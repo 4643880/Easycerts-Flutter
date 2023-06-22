@@ -160,7 +160,9 @@ class _VisitCheckoutState extends State<VisitCheckout> {
                     },
                     validator: (String? value) {
                       return simpleValidator(
-                          value, "*Additional Comment is required");
+                        value,
+                        "*Additional Comment is required",
+                      );
                     },
                   ),
                   SizedBox(

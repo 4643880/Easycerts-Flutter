@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:easy_certs/model/validation_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -24,6 +25,8 @@ class JobController extends GetxController implements GetxService {
   RxList<dynamic> assignedJobsList = [].obs;
   RxString customerSignatureUrl = "".obs;
   RxString engSignatureUrl = "".obs;
+  RxList<String> listToCollectValidationErrors = <String>[].obs;
+  RxList<Map> listToCollectValidationErrorsModel = <Map>[].obs;
 
   RxMap<String, dynamic> selectedJob = <String, dynamic>{}.obs;
   RxMap<String, dynamic> checkoutJobsDetail = <String, dynamic>{}.obs;

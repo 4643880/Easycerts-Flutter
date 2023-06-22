@@ -5,6 +5,7 @@ import 'package:easy_certs/helper/app_colors.dart';
 import 'package:easy_certs/helper/app_texts.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../constants.dart';
 import '../../helper/api.dart';

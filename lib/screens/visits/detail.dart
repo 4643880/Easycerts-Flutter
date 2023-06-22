@@ -24,7 +24,8 @@ class Detail extends StatefulWidget {
 }
 
 class _DetailState extends State<Detail> {
-  late GoogleMapController _controller;
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
 
   late CameraPosition kGooglePlex;
   late CameraPosition lake;
@@ -98,7 +99,6 @@ class _DetailState extends State<Detail> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 
@@ -191,7 +191,7 @@ class _DetailState extends State<Detail> {
                 markers: Set<Marker>.of(_markers),
                 initialCameraPosition: kGooglePlex,
                 onMapCreated: (GoogleMapController controller) {
-                  _controller = controller;
+                  _controller.complete(controller);
                 },
               ),
             ),

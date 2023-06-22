@@ -45,10 +45,12 @@ class _DynamicExpandedTilesState extends State<DynamicExpandedTiles> {
     await funcToFechData();
     await Future.delayed(const Duration(seconds: 1));
     // devtools.log("2: " + DateTime.now().toString());
-    setState(() {
-      myData = temporaryList;
-      isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        myData = temporaryList;
+        isLoading = false;
+      });
+    }
     Util.dismiss();
   }
 
@@ -78,6 +80,7 @@ class _DynamicExpandedTilesState extends State<DynamicExpandedTiles> {
             itemCount: widget.sectionData['data'].length,
             itemBuilder: (context, index) => DynamicFormFields(
               index: index,
+              expandedTileIndex: widget.index,
               itemName: widget.itemName,
               expandedTileName: widget.sectionData['name'],
               type: widget.sectionData['data'][index]['type'] ?? "",

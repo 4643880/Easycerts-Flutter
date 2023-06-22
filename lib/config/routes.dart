@@ -32,7 +32,10 @@ class Routes {
   static final routes = [
     GetPage(name: routeSplash, page: () => const TKDismiss(SplashScreen())),
     GetPage(name: routeLogin, page: () => TKDismiss(LoginScreen())),
-    GetPage(name: routeDashboard, page: () => const TKDismiss(Dashboard())),
+    GetPage(
+      name: routeDashboard,
+      page: () => const TKDismiss(Dashboard()),
+    ),
     GetPage(
         name: routeWorksheetsDetail,
         page: () => const TKDismiss(WorksheetsDetailScreen()),
@@ -41,6 +44,8 @@ class Routes {
         })),
     GetPage(
       name: routeVisitDetail,
+      transition: Transition.noTransition,
+      transitionDuration: const Duration(seconds: 0),
       page: () => TKDismiss(VisitDetail()),
     ),
     GetPage(

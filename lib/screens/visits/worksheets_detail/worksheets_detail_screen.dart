@@ -4,11 +4,14 @@ import 'package:easy_certs/controller/auth_controller.dart';
 import 'package:easy_certs/controller/job_controller.dart';
 import 'package:easy_certs/helper/app_texts.dart';
 import 'package:easy_certs/helper/hive_boxes.dart';
+import 'package:easy_certs/model/validation_model.dart';
 import 'package:easy_certs/model/worksheet_data_submit_model.dart';
+import 'package:easy_certs/utils/extra_function.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:developer' as devtools show log;
 import '../../../model/worksheet_image_rendered_model.dart';
@@ -117,7 +120,7 @@ class _WorksheetsDetailScreenState extends State<WorksheetsDetailScreen> {
               }
             }
 
-            devtools.log(selectedWorkSheet.toString());
+            // devtools.log(selectedWorkSheet.toString());
 
             // var uuid = const Uuid().v1();
             List? emptyList = [];
@@ -153,7 +156,7 @@ class _WorksheetsDetailScreenState extends State<WorksheetsDetailScreen> {
 
             final data =
                 await Boxes.getSavedWorkSpaceData().get(workSheetIdentifier);
-            devtools.log(data.toString());
+            // devtools.log(data.toString());
 
             // List? listOfKeys = Boxes.getKeysOfWorkSpaceData().get('keysOfList');
 
@@ -184,6 +187,9 @@ class _WorksheetsDetailScreenState extends State<WorksheetsDetailScreen> {
           },
           onPressed2: () async {
             Util.showLoading("Uploading Data");
+            Get.find<JobController>()
+                .listToCollectValidationErrorsModel
+                .clear();
             if (formKey.currentState!.validate()) {
               WorksheetImageRenderedModel? checkImageIsRequired = jobController
                   .worksheetImageRenderedList
@@ -256,7 +262,57 @@ class _WorksheetsDetailScreenState extends State<WorksheetsDetailScreen> {
               }
             } else {
               Util.dismiss();
-              Util.showErrorSnackBar("Some required fields are empty!");
+
+              Map<String, List<String>> resultMap = {};
+              List<Map> li =
+                  Get.find<JobController>().listToCollectValidationErrorsModel;
+
+              // Adding this map into validator function
+              // Map<String, Object> myMap = {
+              //   "expandedTileName": widget.expandedTileName,
+              //   "title": widget.title,
+              // };
+
+              for (var map in li) {
+                var expandedTileName = map["expandedTileName"];
+                var title = map["title"];
+                // devtools.log("expandedTileName => " + expandedTileName);
+                // devtools.log("title => " + title);
+
+                if (resultMap.containsKey(expandedTileName)) {
+                  resultMap[expandedTileName]!.add(title);
+                  devtools.log("${resultMap[expandedTileName]}");
+                } else {
+                  resultMap[expandedTileName] = [title];
+                }
+              }
+
+              // devtools.log("after for loop => ${resultMap.toString()}");
+
+              List<Map<String, dynamic>> desiredOutput = resultMap.entries
+                  .map((entry) => {
+                        "Expanded Tile Name": entry.key,
+                        "List of Errors": entry.value,
+                      })
+                  .toList();
+
+              // devtools.log("desired Output : " + desiredOutput.toString());
+//
+              Get.find<JobController>()
+                  .listToCollectValidationErrorsModel
+                  .value = desiredOutput;
+
+              customDialogForValidationError(
+                context: context,
+                barrierDismissible: false,
+                buttonCancelOnTap: () {
+                  Get.back();
+                },
+                buttonConfirmAndOpenMapOnTap: () {},
+                buttonConfirmOnTap: () {},
+                validationErrorsList: Get.find<JobController>()
+                    .listToCollectValidationErrorsModel,
+              );
             }
           },
           buttonTitle: "SAVE",

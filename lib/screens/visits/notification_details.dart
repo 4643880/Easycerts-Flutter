@@ -47,8 +47,12 @@ class _NotificationDetailState extends State<NotificationDetail> {
       // devtools.log(jobController.selectedJob['site']['long']);
       kGooglePlex = CameraPosition(
         target: LatLng(
-          double.parse(jobController.selectedJob['site']['lat'].toString()),
-          double.parse(jobController.selectedJob['site']['long'].toString()),
+          double.tryParse(
+                  jobController.selectedJob['site']['lat'].toString()) ??
+              0.0,
+          double.tryParse(
+                  jobController.selectedJob['site']['long'].toString()) ??
+              0.0,
         ),
         zoom: 4,
         // zoom: 14.4746,
@@ -56,8 +60,12 @@ class _NotificationDetailState extends State<NotificationDetail> {
       lake = CameraPosition(
         bearing: 192.8334901395799,
         target: LatLng(
-          double.parse(jobController.selectedJob['site']['lat'].toString()),
-          double.parse(jobController.selectedJob['site']['long'].toString()),
+          double.tryParse(
+                  jobController.selectedJob['site']['lat'].toString()) ??
+              0.0,
+          double.tryParse(
+                  jobController.selectedJob['site']['long'].toString()) ??
+              0.0,
         ),
         tilt: 59.440717697143555,
         zoom: 4,
@@ -65,16 +73,24 @@ class _NotificationDetailState extends State<NotificationDetail> {
       );
       _latLang.add(
         LatLng(
-          double.parse(jobController.selectedJob['site']['lat'].toString()),
-          double.parse(jobController.selectedJob['site']['long'].toString()),
+          double.tryParse(
+                  jobController.selectedJob['site']['lat'].toString()) ??
+              0.0,
+          double.tryParse(
+                  jobController.selectedJob['site']['long'].toString()) ??
+              0.0,
         ),
       );
       _markers.add(
         Marker(
           markerId: const MarkerId('12'),
           position: LatLng(
-            double.parse(jobController.selectedJob['site']['lat'].toString()),
-            double.parse(jobController.selectedJob['site']['long'].toString()),
+            double.tryParse(
+                    jobController.selectedJob['site']['lat'].toString()) ??
+                0.0,
+            double.tryParse(
+                    jobController.selectedJob['site']['long'].toString()) ??
+                0.0,
           ),
         ),
       );

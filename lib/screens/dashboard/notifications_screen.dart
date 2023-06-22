@@ -114,12 +114,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                   "",
                                               style: kTextStyle14Normal,
                                             ),
-                                            Text(
-                                              notificationController
-                                                      .notificationList[index]
-                                                      .description ??
-                                                  "",
-                                              style: kTextStyle12Normal,
+                                            SizedBox(
+                                              width: 260.w,
+                                              child: Text(
+                                                notificationController
+                                                        .notificationList[index]
+                                                        .description ??
+                                                    "",
+                                                // maxLines: 2,
+                                                style: TextStyle(
+                                                  fontSize: kFontSize12,
+                                                  fontWeight: FontWeight.normal,
+                                                  letterSpacing: 0.5,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ),
                                             ),
                                             SizedBox(height: 4.h),
                                             Text(
