@@ -36,12 +36,12 @@ class VisitDetail extends StatelessWidget {
     Tab(
       text: AppTexts.notes.toUpperCase(),
     ),
-    Tab(
-      text: AppTexts.quotes.toUpperCase(),
-    ),
-    Tab(
-      text: AppTexts.purchaseOrders.toUpperCase(),
-    ),
+    // Tab(
+    //   text: AppTexts.quotes.toUpperCase(),
+    // ),
+    // Tab(
+    //   text: AppTexts.purchaseOrders.toUpperCase(),
+    // ),
   ];
   @override
   Widget build(BuildContext context) {
@@ -91,8 +91,8 @@ class VisitDetail extends StatelessWidget {
                 Worksheets(),
                 const Timeline(),
                 const Notes(),
-                const Quotes(),
-                const PurchaseOrders(),
+                // const Quotes(),
+                // const PurchaseOrders(),
               ],
             ),
           ),

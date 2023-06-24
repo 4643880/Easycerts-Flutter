@@ -6,7 +6,7 @@ import 'package:easy_certs/screens/components/large_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
+import 'dart:developer' as devtools show log;
 import '../../config/routes.dart';
 import '../../helper/app_colors.dart';
 import '../../theme/text_styles.dart';
@@ -17,6 +17,7 @@ class Notes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    devtools.log(Get.find<JobController>().selectedJob['Notes'].toString());
     return GetBuilder<JobController>(builder: (jobController) {
       return (jobController.selectedJob['Notes'] != null &&
               jobController.selectedJob['Notes'].length > 0)

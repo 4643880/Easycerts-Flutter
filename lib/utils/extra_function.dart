@@ -28,9 +28,9 @@ import '../theme/text_styles.dart';
 Future<void> getPermission() async {
   final request = await Permission.location.request();
   if (!request.isGranted) {
-    devtools.log("not granted");
+    // devtools.log("not granted");
   } else {
-    devtools.log("granted");
+    // devtools.log("granted");
   }
 }
 

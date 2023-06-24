@@ -281,7 +281,8 @@ class _WorksheetsDetailScreenState extends State<WorksheetsDetailScreen> {
 
                 if (resultMap.containsKey(expandedTileName)) {
                   resultMap[expandedTileName]!.add(title);
-                  devtools.log("${resultMap[expandedTileName]}");
+                  // devtools.log("${resultMap[expandedTileName]}");
+                  // devtools.log("${expandedTileName}");
                 } else {
                   resultMap[expandedTileName] = [title];
                 }

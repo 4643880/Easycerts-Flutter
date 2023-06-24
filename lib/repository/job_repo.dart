@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:developer' as devtools show log;
 import 'package:easy_certs/helper/job_status.dart';
-
 import '../helper/api.dart';
 import '../model/worksheet_data_submit_model.dart';
 import '../model/worksheet_image_rendered_model.dart';
@@ -188,7 +187,7 @@ class JobRepo {
 
   Future<dynamic> getPendingJobList(
       String status, String token, String date) async {
-    devtools.log(status);
+    // devtools.log(status);
     Uri api = Uri.parse(
         "${ApiHelper.getApiUrls()[ApiHelper.kJobList]!}?date=$date&status=$status&token=$token");
     // devtools.log(api.toString());

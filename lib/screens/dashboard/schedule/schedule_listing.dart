@@ -13,7 +13,14 @@ import 'dart:developer' as devtools show log;
 import '../../../config/routes.dart';
 import '../../components/Custom_Icon_and_text.dart';
 
-enum FromWhichVisit { pending, ongoing, complete, assignedVisits, allVisits }
+enum FromWhichVisit {
+  pending,
+  ongoing,
+  complete,
+  assignedVisits,
+  allVisits,
+  searchVisits
+}
 
 class ScheduleListing extends StatelessWidget {
   ScheduleListing({

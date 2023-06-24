@@ -64,6 +64,7 @@ dependencies:
   flutter_sms: ^2.3.3
   uuid: ^3.0.7
   permission_handler: ^10.3.0
+  animated_floating_buttons: ^0.0.2
 
 
 flutter_native_splash:

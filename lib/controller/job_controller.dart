@@ -19,6 +19,7 @@ import 'dart:developer' as devtools show log;
 class JobController extends GetxController implements GetxService {
   RxBool isLoading = true.obs;
   RxList<dynamic> jobsList = [].obs;
+  RxList<dynamic> listOfSearchedJobs = [].obs;
   RxList<dynamic> completedJobsList = [].obs;
   RxList<dynamic> pendingJobsList = [].obs;
   RxList<dynamic> onGoingJobsList = [].obs;
@@ -343,14 +344,14 @@ class JobController extends GetxController implements GetxService {
 
   Future<bool> getPendingJobList(
       String status, String date, String token) async {
-    devtools.log(status);
+    // devtools.log(status);
     try {
       dynamic check = await JobRepo().getPendingJobList(status, token, date);
       if (check != null) {
         pendingJobsList.value = [];
         update();
         pendingJobsList.value = check['data'];
-        devtools.log(check['data'][0]['status']);
+        // devtools.log(check['data'][0]['status']);
         // jobsList.sort((a, b) => a['start_time'].compareTo(b['start_time']));
         update();
         return true;
