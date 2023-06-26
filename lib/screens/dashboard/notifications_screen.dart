@@ -107,12 +107,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              notificationController
-                                                      .notificationList[index]
-                                                      .title ??
-                                                  "",
-                                              style: kTextStyle14Normal,
+                                            SizedBox(
+                                              width: 260.w,
+                                              child: Text(
+                                                notificationController
+                                                        .notificationList[index]
+                                                        .title ??
+                                                    "",
+                                                maxLines: 1,
+                                                style: TextStyle(
+                                                  fontSize: kFontSize14,
+                                                  fontWeight: FontWeight.normal,
+                                                  letterSpacing: 0.5,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
                                             ),
                                             SizedBox(
                                               width: 260.w,

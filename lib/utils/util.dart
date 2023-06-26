@@ -34,7 +34,22 @@ class Util {
   }
 
   static void showSnackBar(String title, String message, String? svgPicture) {
-    Get.snackbar(title, message);
+    Get.snackbar(
+      title,
+      message,
+      margin: EdgeInsets.symmetric(vertical: 6.h, horizontal: 6.w),
+      backgroundColor: AppColors.grey300,
+      titleText: Text(
+        title,
+        maxLines: 1,
+        style: kTextStyle16Normal.copyWith(color: AppColors.primary),
+      ),
+      messageText: Text(
+        message,
+        maxLines: 3,
+        style: kTextStyle12Normal,
+      ),
+    );
   }
 
   static void showErrorSnackBar(String message) {

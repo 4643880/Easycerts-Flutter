@@ -1,3 +1,4 @@
+import 'package:easy_certs/controller/notes_controller.dart';
 import 'package:easy_certs/controller/splash_controller.dart';
 import 'package:easy_certs/model/worksheet_data_submit_model.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -18,6 +19,7 @@ Future<void> init() async {
   Get.lazyPut(() => DashboardController());
   Get.lazyPut(() => NotificationController());
   Get.lazyPut(() => JobController());
+  Get.lazyPut(() => NotesController());
 
   await Hive.initFlutter();
 

@@ -58,6 +58,9 @@ class ScheduleListing extends StatelessWidget {
                     onTap: () {
                       JobController jobController = Get.find();
                       jobController.changeSelectedJob(list[index]);
+                      // devtools.log(list[index]["Notes"].toString());
+                      jobController.listOfSelectedJobNotes.value =
+                          list[index]["Notes"];
                       Get.toNamed(routeVisitDetail);
                     },
                     borderRadius: BorderRadius.circular(kBorderRadius10),

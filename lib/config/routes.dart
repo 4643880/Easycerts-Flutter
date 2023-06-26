@@ -4,6 +4,9 @@ import 'package:easy_certs/screens/image_view/image_view.dart';
 import 'package:easy_certs/screens/pdf_view/pdf_view.dart';
 import 'package:easy_certs/screens/reject_job/reject_job.dart';
 import 'package:easy_certs/screens/splash/splash_screen.dart';
+import 'package:easy_certs/screens/visits/notes_screens/display_selected_img_of_notes.dart';
+import 'package:easy_certs/screens/visits/notes_screens/type_note_screen.dart';
+import 'package:easy_certs/screens/visits/notes_screens/type_signature_screen.dart';
 import 'package:easy_certs/screens/visits/visit_detail.dart';
 import 'package:easy_certs/utils/util.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,6 +30,9 @@ const routeBothSignature = '/routeBothSignature';
 const routeVisitCheckout = '/routeVisitCheckout';
 const routeRejectJob = '/routeRejectJob';
 const routeNoAccess = '/routeNoAccess';
+const routeDisplayImageOfNote = "/routeDisplayImageOfNote";
+const routeTypeNote = "/routeTypeNote";
+const routeTypeSignature = "/routeTypeSignature";
 
 class Routes {
   static final routes = [
@@ -59,6 +65,24 @@ class Routes {
     GetPage(name: routeVisitCheckout, page: () => TKDismiss(VisitCheckout())),
     GetPage(name: routeRejectJob, page: () => const TKDismiss(RejectJob())),
     GetPage(name: routeNoAccess, page: () => const TKDismiss(NoAccess())),
+    GetPage(
+      name: routeDisplayImageOfNote,
+      page: () => TKDismiss(
+        DisplayNotesImageScreen(),
+      ),
+    ),
+    GetPage(
+      name: routeTypeNote,
+      page: () => TKDismiss(
+        TypeNoteScreen(),
+      ),
+    ),
+    GetPage(
+      name: routeTypeSignature,
+      page: () => TKDismiss(
+        TypeSignatureScreen(),
+      ),
+    ),
   ];
 }
 

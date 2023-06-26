@@ -30,22 +30,22 @@ class ImageView extends StatelessWidget {
           PhotoView(
             imageProvider: CachedNetworkImageProvider(imageViewModel.url),
           ),
-          Positioned(
-            bottom: 16.h,
-            left: 16.w,
-            child: Container(
-              height: 30.h,
-              color: AppColors.black,
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: Text(
-                imageViewModel.name,
-                style: kTextStyle12Normal.copyWith(
-                  color: AppColors.white,
-                ),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   bottom: 16.h,
+          //   left: 16.w,
+          //   child: Container(
+          //     height: 30.h,
+          //     color: AppColors.black,
+          //     alignment: Alignment.centerLeft,
+          //     padding: EdgeInsets.symmetric(horizontal: 10.w),
+          //     child: Text(
+          //       imageViewModel.name,
+          //       style: kTextStyle12Normal.copyWith(
+          //         color: AppColors.white,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

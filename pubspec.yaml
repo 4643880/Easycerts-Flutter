@@ -41,7 +41,7 @@ dependencies:
   get: ^4.6.5
   http: ^0.13.5
   flutter_easyloading: ^3.0.5
-  image_picker: ^0.8.6
+  image_picker: ^0.8.9
   connectivity_plus: ^2.3.9
   intl: ^0.17.0
   syncfusion_flutter_signaturepad: ^20.3.49
@@ -64,7 +64,7 @@ dependencies:
   flutter_sms: ^2.3.3
   uuid: ^3.0.7
   permission_handler: ^10.3.0
-  animated_floating_buttons: ^0.0.2
+  hawk_fab_menu: ^1.2.0
 
 
 flutter_native_splash:

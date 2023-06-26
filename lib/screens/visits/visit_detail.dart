@@ -47,7 +47,7 @@ class VisitDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<JobController>(builder: (jobController) {
       return DefaultTabController(
-        length: 6,
+        length: 4,
         child: Obx(
           () => Scaffold(
             appBar: CustomAppbar(
@@ -90,7 +90,7 @@ class VisitDetail extends StatelessWidget {
                     : Detail(),
                 Worksheets(),
                 const Timeline(),
-                const Notes(),
+                Notes(),
                 // const Quotes(),
                 // const PurchaseOrders(),
               ],

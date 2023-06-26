@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:developer' as devtools show log;
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_certs/controller/auth_controller.dart';
+import 'package:easy_certs/controller/notes_controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -50,6 +51,9 @@ class ApiHelper {
       kJobComplete: Uri.parse("${baseUrl}api/job/complete"),
       kTemplates: Uri.parse("${baseUrl}api/templates"),
       kJobUpdateWorkedTime: Uri.parse("${baseUrl}api/job/update/worked_time"),
+      kUploadNotesImage: Uri.parse("${baseUrl}api/event/add"),
+      kUploadNotesText: Uri.parse("${baseUrl}api/event/add"),
+      kUploadNotesSignature: Uri.parse("${baseUrl}api/event/add"),
     };
   }
 
@@ -69,6 +73,9 @@ class ApiHelper {
   static String kJobComplete = "kJobComplete";
   static String kTemplates = "kTemplates";
   static String kJobUpdateWorkedTime = "kJobUpdateWorkedTime";
+  static String kUploadNotesImage = "kUploadNotesImage";
+  static String kUploadNotesText = "kUploadNotesText";
+  static String kUploadNotesSignature = "kUploadNotesSignature";
 
   Future<dynamic> get(
       String apiName, Uri uri, Map<String, String>? header) async {
@@ -190,18 +197,10 @@ class ApiHelper {
           temp,
         ),
       );
-      request.fields['created_by'] = createdByEngId.toString();
-      // request.fields['url'] = url;
-      request.fields['token'] = token;
-      request.fields['type'] = type;
-      request.fields['clientVisibility'] = clientVisibility ? "1" : "0";
-      request.fields['job_id'] = jobId;
-      request.fields['notes'] = notes;
-      request.fields['attachment_type'] = "image";
 
       // request.fields['image'] = createdByEngId.toString();
 
-      print("fields = ${request.fields}");
+      print("fields = ${request.fields.toString()}");
       request.files.add(multipartFile);
       request.headers.addAll(header!);
       http.StreamedResponse streamedResponse = await request.send();
@@ -220,15 +219,19 @@ class ApiHelper {
     }
   }
 
-  Future<dynamic> imageUpload(Uri uri, Map<String, String>? header,
-      File imageFile, Map<String, dynamic>? fields) async {
+  Future<dynamic> imageUpload(
+    Uri uri,
+    Map<String, String>? header,
+    File imageFile,
+    Map<String, dynamic>? fields,
+  ) async {
     bool internetAvailable = await internetAvailabilityCheck();
     if (internetAvailable) {
       String temp = p.extension(imageFile.path).replaceAll(".", "");
 
       http.MultipartRequest request = http.MultipartRequest("POST", uri);
       http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
-        'picture',
+        'image',
         imageFile.path,
         contentType: MediaType(
           'image',

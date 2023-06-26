@@ -28,6 +28,7 @@ class JobController extends GetxController implements GetxService {
   RxString engSignatureUrl = "".obs;
   RxList<String> listToCollectValidationErrors = <String>[].obs;
   RxList<Map> listToCollectValidationErrorsModel = <Map>[].obs;
+  RxList listOfSelectedJobNotes = [].obs;
 
   RxMap<String, dynamic> selectedJob = <String, dynamic>{}.obs;
   RxMap<String, dynamic> checkoutJobsDetail = <String, dynamic>{}.obs;
