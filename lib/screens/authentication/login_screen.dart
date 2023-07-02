@@ -150,6 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           await authController.loginWithApi(email, password);
                       if (temp) {
                         Util.dismiss();
+                        await Get.find<AuthController>().saveToken();
                         Get.toNamed(routeDashboard);
                       } else {
                         Util.dismiss();

@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:easy_certs/helper/app_texts.dart';
+import 'package:easy_certs/utils/util.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-
+import 'package:platform_device_id/platform_device_id.dart';
+import 'dart:developer' as devtools show log;
 import '../helper/hive_boxes.dart';
 import '../model/user_model.dart';
 import '../repository/auth_repo.dart';
@@ -11,6 +16,39 @@ class AuthController extends GetxController implements GetxService {
   RxBool isLogin = false.obs;
   RxString token = "".obs;
   Rx<UserModel> userModel = UserModel().obs;
+
+  Future<bool> saveToken() async {
+    String? deviceId = await PlatformDeviceId.getDeviceId;
+    String deviceType = Platform.isAndroid ? "android" : "ios";
+    String? fcm = await FirebaseMessaging.instance.getToken();
+    try {
+      dynamic check = await AuthRepo().saveToken(
+        fcm,
+        deviceId,
+        deviceType,
+      );
+      if (check != null) {
+        if (check['data'] != null) {
+          devtools.log(check['data']['created_at']);
+          devtools.log("FCM => " + check['data']['device_token']);
+          devtools.log("FCM posted Successfully ....");
+          update();
+          return true;
+        } else {
+          devtools.log("Not Posted FCM");
+          Util.showErrorSnackBar(check['status_code'].toString());
+        }
+      }
+      update();
+      return false;
+    } catch (e) {
+      if (kDebugMode) {
+        print("Exception in saveTokenApi = $e");
+      }
+      update();
+      return false;
+    }
+  }
 
   Future<bool> loginWithApi(String email, String password) async {
     try {

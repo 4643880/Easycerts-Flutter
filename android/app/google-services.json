@@ -1,0 +1,113 @@
+{
+  "project_info": {
+    "project_number": "587986884645",
+    "project_id": "shnugg-staging",
+    "storage_bucket": "shnugg-staging.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587986884645:android:b28c89912091d315ab47cc",
+        "android_client_info": {
+          "package_name": "com.app.easycerts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587986884645-ggfgf8ra0590n9nuolqko8guju9hur0d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9m5KnWgxIYUvvt2KrcIGssrrJw0slPxY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587986884645-ggfgf8ra0590n9nuolqko8guju9hur0d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587986884645:android:5a15b7bbb762ba6aab47cc",
+        "android_client_info": {
+          "package_name": "com.app.easycerts_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587986884645-ggfgf8ra0590n9nuolqko8guju9hur0d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9m5KnWgxIYUvvt2KrcIGssrrJw0slPxY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587986884645-ggfgf8ra0590n9nuolqko8guju9hur0d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587986884645:android:4939a55342a36165ab47cc",
+        "android_client_info": {
+          "package_name": "com.app.shnugg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587986884645-1roo201m06d9vidgs5ubrl66qqbheqq1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.shnugg",
+            "certificate_hash": "8fe0cdccd137d4f370a6a962f30388dbbffa57f9"
+          }
+        },
+        {
+          "client_id": "587986884645-tpo0fu7474qso2c267898vgoi7n7mptl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.shnugg",
+            "certificate_hash": "ba2d50004c765cdd0da9fba7b477e4ff5a924ba5"
+          }
+        },
+        {
+          "client_id": "587986884645-ggfgf8ra0590n9nuolqko8guju9hur0d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9m5KnWgxIYUvvt2KrcIGssrrJw0slPxY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587986884645-ggfgf8ra0590n9nuolqko8guju9hur0d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

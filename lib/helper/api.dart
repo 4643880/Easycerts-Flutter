@@ -54,6 +54,7 @@ class ApiHelper {
       kUploadNotesImage: Uri.parse("${baseUrl}api/event/add"),
       kUploadNotesText: Uri.parse("${baseUrl}api/event/add"),
       kUploadNotesSignature: Uri.parse("${baseUrl}api/event/add"),
+      kSaveToken: Uri.parse("${baseUrl}api/user/device"),
     };
   }
 
@@ -76,6 +77,7 @@ class ApiHelper {
   static String kUploadNotesImage = "kUploadNotesImage";
   static String kUploadNotesText = "kUploadNotesText";
   static String kUploadNotesSignature = "kUploadNotesSignature";
+  static String kSaveToken = "kSaveToken";
 
   Future<dynamic> get(
       String apiName, Uri uri, Map<String, String>? header) async {

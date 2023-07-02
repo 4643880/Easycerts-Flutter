@@ -11,4 +11,25 @@ class AuthRepo {
         <String, dynamic>{"email": email, "password": password});
     return dynamicData;
   }
+
+  Future<dynamic> saveToken(
+    String? fcmToken,
+    String? udid,
+    String deviceType,
+  ) async {
+    Uri uri = Uri.parse(
+        "${ApiHelper.getApiUrls()[ApiHelper.kSaveToken]!}?device_token=$fcmToken&type=$deviceType&udid=$udid");
+    dynamic dynamicData = await ApiHelper().post(
+      "saveToken", uri, ApiHelper.getAuthHeader(), {},
+      // <String, dynamic>{
+      //   "device_id": deviceId,
+      //   "api_token": apiToken,
+      //   "device_type": deviceType,
+      //   "cookie": "",
+      //   "user_id": userId
+      // },
+    );
+
+    return dynamicData;
+  }
 }

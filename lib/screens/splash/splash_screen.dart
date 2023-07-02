@@ -1,4 +1,5 @@
 import 'package:easy_certs/config/routes.dart';
+import 'package:easy_certs/controller/auth_controller.dart';
 import 'package:easy_certs/controller/splash_controller.dart';
 import 'package:easy_certs/helper/app_assets.dart';
 import 'package:easy_certs/helper/app_colors.dart';
@@ -43,6 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
             bool navCheck = await splashController.userIsLogin();
             if (navCheck) {
               // if (await ApiHelper().internetAvailabilityCheck()) {
+              Get.find<AuthController>().saveToken();
               Get.offNamed(routeDashboard);
 
               if (Get.context != null) {
