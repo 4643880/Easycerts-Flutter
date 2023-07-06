@@ -60,7 +60,24 @@ class VisitDetailBottomButton extends StatelessWidget {
                         Util.dismiss();
                       }
                     },
-                    buttonConfirmAndOpenMapOnTap: () {},
+                    buttonConfirmAndOpenMapOnTap: () async {
+                      Get.back(closeOverlays: true);
+                      Util.showLoading("Updating Status");
+                      AuthController authController = Get.find();
+                      bool temp = await jobController.updateSelectedJobStatus(
+                        jobController.selectedJob['id'].toString(),
+                        "4",
+                        status.toString(),
+                        null,
+                        null,
+                        authController.token.value,
+                      );
+                      if (temp) {
+                        Util.dismiss();
+                      } else {
+                        Util.dismiss();
+                      }
+                    },
                     buttonCancelOnTap: () {
                       Get.back(closeOverlays: true);
                     },

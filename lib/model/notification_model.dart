@@ -5,6 +5,7 @@ class NotificationModel {
     String? image,
     String? description,
     String? status,
+    Jobattachment? jobattachment,
     Jobvisit? jobvisit,
     String? createdAt,
     String? updatedAt,
@@ -14,6 +15,7 @@ class NotificationModel {
     _image = image;
     _description = description;
     _status = status;
+    _jobattachment = jobattachment;
     _jobvisit = jobvisit;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
@@ -25,6 +27,9 @@ class NotificationModel {
     _image = json['image'];
     _description = json['description'];
     _status = json['status'];
+    _jobattachment = json["jobattachment"] == null
+        ? null
+        : Jobattachment.fromJson(json["jobattachment"]);
     _jobvisit =
         json['jobvisit'] != null ? Jobvisit.fromJson(json['jobvisit']) : null;
     _createdAt = json['created_at'];
@@ -35,6 +40,7 @@ class NotificationModel {
   String? _image;
   String? _description;
   String? _status;
+  dynamic _jobattachment;
   Jobvisit? _jobvisit;
   String? _createdAt;
   String? _updatedAt;
@@ -64,6 +70,7 @@ class NotificationModel {
   String? get description => _description;
   String? get status => _status;
   Jobvisit? get jobvisit => _jobvisit;
+  Jobattachment? get jobattachment => _jobattachment;
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
 
@@ -81,6 +88,42 @@ class NotificationModel {
     map['updated_at'] = _updatedAt;
     return map;
   }
+}
+
+class Jobattachment {
+  int? id;
+  dynamic url;
+  String? notes;
+  int? clientVisibility;
+  String? type;
+  int? jobId;
+
+  Jobattachment({
+    this.id,
+    this.url,
+    this.notes,
+    this.clientVisibility,
+    this.type,
+    this.jobId,
+  });
+
+  factory Jobattachment.fromJson(Map<String, dynamic> json) => Jobattachment(
+        id: json["id"],
+        url: json["url"],
+        notes: json["notes"],
+        clientVisibility: json["client_visibility"],
+        type: json["type"],
+        jobId: json["job_id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "url": url,
+        "notes": notes,
+        "client_visibility": clientVisibility,
+        "type": type,
+        "job_id": jobId,
+      };
 }
 
 class Jobvisit {

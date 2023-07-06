@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:easy_certs/helper/app_texts.dart';
 import 'package:easy_certs/utils/util.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -29,13 +28,13 @@ class AuthController extends GetxController implements GetxService {
       );
       if (check != null) {
         if (check['data'] != null) {
-          devtools.log(check['data']['created_at']);
-          devtools.log("FCM => " + check['data']['device_token']);
-          devtools.log("FCM posted Successfully ....");
+          // devtools.log(check['data']['created_at']);
+          // devtools.log("FCM => " + check['data']['device_token']);
+          // devtools.log("FCM posted Successfully ....");
           update();
           return true;
         } else {
-          devtools.log("Not Posted FCM");
+          // devtools.log("Not Posted FCM");
           Util.showErrorSnackBar(check['status_code'].toString());
         }
       }

@@ -113,6 +113,7 @@ class TypeNoteScreen extends StatelessWidget {
               );
               devtools.log("Form Submitted");
               if (response != null && response["data"] != null) {
+                devtools.log("Reached in this area");
                 Get.find<JobController>().listOfSelectedJobNotes.insert(
                   0,
                   {
@@ -120,6 +121,11 @@ class TypeNoteScreen extends StatelessWidget {
                     "type": "note",
                   },
                 );
+                Get.find<JobController>().update();
+                // devtools.log(Get.find<JobController>()
+                //     .listOfSelectedJobNotes
+                //     .length
+                //     .toString());
               }
             } else {
               devtools.log("Form Faild");

@@ -7,7 +7,7 @@ import 'package:easy_certs/helper/app_texts.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-
+import 'package:get/get.dart';
 import '../../constants.dart';
 import '../../helper/api.dart';
 import '../../helper/hive_boxes.dart';
@@ -23,6 +23,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
+    // Get.to(CountDownTimer());
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
         Future.delayed(const Duration(seconds: 1), () async {

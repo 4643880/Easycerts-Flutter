@@ -202,6 +202,7 @@ class JobController extends GetxController implements GetxService {
         customerSignatureUrl,
       );
       if (check != null) {
+        // devtools.log("=> 1 job visit complete api");
         if (check['complete_job'].toString() == "1") {
           Util.dismiss();
           //Make Api call for

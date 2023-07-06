@@ -52,6 +52,21 @@ class Util {
     );
   }
 
+  static void showSnackBarBottom(String title, String message) {
+    Get.snackbar(
+      title,
+      message,
+      colorText: Colors.white,
+      backgroundColor: AppColors.primary,
+      snackPosition: SnackPosition.BOTTOM,
+      margin: EdgeInsets.only(
+        bottom: 30.h,
+        left: 12.w,
+        right: 12.w,
+      ),
+    );
+  }
+
   static void showErrorSnackBar(String message) {
     Get.snackbar(
       "",

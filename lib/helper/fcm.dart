@@ -94,7 +94,7 @@ Future<String?> getUdid() async {
 
 initInfo() async {
   var androidInitialize =
-      const AndroidInitializationSettings("@mipmap/launcher_icon");
+      const AndroidInitializationSettings("@mipmap/notification_icon");
   var iosInitialize = const DarwinInitializationSettings(
     requestAlertPermission: true,
     requestBadgePermission: true,

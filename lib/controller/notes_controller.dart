@@ -1,17 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
-import 'package:easy_certs/controller/auth_controller.dart';
-import 'package:easy_certs/helper/app_colors.dart';
 import 'package:easy_certs/repository/notes_repo.dart';
 import 'package:easy_certs/utils/util.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:developer' as devtools show log;
-import 'package:http/http.dart' as http;
-import 'package:path/path.dart' as path;
-import 'package:http_parser/http_parser.dart';
 
 class NotesController extends GetxController implements GetxService {
   // Object of Image Picker
@@ -71,12 +63,14 @@ class NotesController extends GetxController implements GetxService {
     required String token,
     required int type,
   }) async {
+    Util.showLoading("Uploading...");
     final check = await NotesRepo().uploadTextNote(
       note: note,
       token: token,
       jobId: jobId,
       type: 7,
     );
+    Util.dismiss();
     if (check != null && check["data"] != null) {
       Get.back();
       Util.showSnackBar(

@@ -1,3 +1,4 @@
+import 'package:easy_certs/controller/auth_controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
@@ -16,6 +17,7 @@ class NotificationController extends GetxController implements GetxService {
       dynamic check = await NotificationRepo().get();
       if (check != null) {
         List<dynamic> tempNotificationList = check['data'];
+        // devtools.log(tempNotificationList.toString());
         notificationList.value = tempNotificationList
             .map((e) => NotificationModel.fromJson(e))
             .toList();

@@ -55,6 +55,7 @@ class ApiHelper {
       kUploadNotesText: Uri.parse("${baseUrl}api/event/add"),
       kUploadNotesSignature: Uri.parse("${baseUrl}api/event/add"),
       kSaveToken: Uri.parse("${baseUrl}api/user/device"),
+      kWorkedTime: Uri.parse("${baseUrl}api/job/update/worked_time"),
     };
   }
 
@@ -78,6 +79,7 @@ class ApiHelper {
   static String kUploadNotesText = "kUploadNotesText";
   static String kUploadNotesSignature = "kUploadNotesSignature";
   static String kSaveToken = "kSaveToken";
+  static String kWorkedTime = "kWorkedTime";
 
   Future<dynamic> get(
       String apiName, Uri uri, Map<String, String>? header) async {
@@ -199,10 +201,18 @@ class ApiHelper {
           temp,
         ),
       );
+      request.fields['created_by'] = createdByEngId.toString();
+      // request.fields['url'] = url;
+      request.fields['token'] = token;
+      request.fields['type'] = type;
+      request.fields['clientVisibility'] = clientVisibility ? "1" : "0";
+      request.fields['job_id'] = jobId;
+      request.fields['notes'] = notes;
+      request.fields['attachment_type'] = "image";
 
       // request.fields['image'] = createdByEngId.toString();
 
-      print("fields = ${request.fields.toString()}");
+      print("fields = ${request.fields}");
       request.files.add(multipartFile);
       request.headers.addAll(header!);
       http.StreamedResponse streamedResponse = await request.send();

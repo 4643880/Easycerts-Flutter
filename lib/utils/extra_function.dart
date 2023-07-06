@@ -664,11 +664,9 @@ launchCaller(String number) async {
   );
   if (await canLaunchUrl(url)) {
     await launchUrl(url);
-    print("reached 1: ");
   } else {
     if (kDebugMode) {
       print('Could not open dialog for number = $url');
-      print("reached 1: ");
     }
   }
 }

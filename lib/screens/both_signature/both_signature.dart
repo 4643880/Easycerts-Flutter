@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_signaturepad/signaturepad.dart';
-
+import 'dart:developer' as devtools show log;
 import '../../controller/auth_controller.dart';
 import '../../utils/extra_function.dart';
 import '../../utils/util.dart';
@@ -124,6 +124,98 @@ class BothSignature extends StatelessWidget {
                   } else {
                     Util.showErrorSnackBar("Sign on both fields");
                   }
+                  // if (customerSignatureKey.currentState != null &&
+                  //     engineerSignatureKey.currentState != null) {
+                  //   Util.showLoading("Updating");
+                  //   ui.Image customerImage =
+                  //       await customerSignatureKey.currentState!.toImage();
+                  //   ui.Image engineerImage =
+                  //       await engineerSignatureKey.currentState!.toImage();
+                  //   ByteData? customerByteData = await customerImage.toByteData(
+                  //     format: ui.ImageByteFormat.png,
+                  //   );
+                  //   ByteData? engineerByteData = await engineerImage.toByteData(
+                  //     format: ui.ImageByteFormat.png,
+                  //   );
+                  //   String customerPath = "", engineerPath = "";
+                  //   String customerPathName = returnRandomStringNumber(),
+                  //       engineerPathName = returnRandomStringNumber();
+                  //   if (customerByteData != null) {
+                  //     customerPath = await saveSignatureFileReturnPath(
+                  //         customerPathName, customerByteData);
+                  //   }
+                  //   if (engineerByteData != null) {
+                  //     engineerPath = await saveSignatureFileReturnPath(
+                  //         engineerPathName, engineerByteData);
+                  //   }
+                  //   devtools.log("Reached here 1");
+                  //   AuthController authController = Get.find();
+                  //   bool temp1 = false, temp2 = false;
+                  //   if (customerPath.isNotEmpty) {
+                  //     temp1 = await jobController.eventAddUploadSignature(
+                  //       false,
+                  //       customerPath,
+                  //       authController.userModel.value.id.toString(),
+                  //       authController.userModel.value.id.toString().isEmpty ||
+                  //               authController.userModel.value.id.toString() ==
+                  //                   'null'
+                  //           ? "0"
+                  //           : authController.userModel.value.id.toString(),
+                  //       true,
+                  //       jobController.selectedJob['id'].toString(),
+                  //       "${jobController.selectedJob['customer']['name']} Signature",
+                  //       authController.token.value,
+                  //       "$customerPathName.png",
+                  //       returnSizeOfImageInMb(
+                  //         File(customerPath),
+                  //       ),
+                  //     );
+                  //   }
+                  //   if (engineerPath.isNotEmpty) {
+                  //     temp2 = await jobController.eventAddUploadSignature(
+                  //       true,
+                  //       engineerPath,
+                  //       authController.userModel.value.id.toString(),
+                  //       authController.userModel.value.id.toString().isEmpty ||
+                  //               authController.userModel.value.id.toString() ==
+                  //                   'null'
+                  //           ? "0"
+                  //           : authController.userModel.value.id.toString(),
+                  //       true,
+                  //       jobController.selectedJob['id'].toString(),
+                  //       "${authController.userModel.value.name} Signature",
+                  //       authController.token.value,
+                  //       "$engineerPathName.png",
+                  //       returnSizeOfImageInMb(
+                  //         File(engineerPath),
+                  //       ),
+                  //     );
+                  //   }
+
+                  //   devtools.log("reached here 2");
+
+                  //   if (temp1 && temp2) {
+                  //     bool temp3 = await jobController.jobVisitComplete(
+                  //       jobController.selectedJob['id'].toString(),
+                  //       jobController.selectedJob['job_id'].toString(),
+                  //       "1",
+                  //       //Todo implement WorkTime for now it is Hardcoded
+                  //       "0",
+                  //       "1",
+                  //       jobController.engSignatureUrl.value,
+                  //       jobController.customerSignatureUrl.value,
+                  //     );
+                  //     if (temp3 == false) {
+                  //       devtools.log("reached here 3");
+                  //       Util.dismiss();
+                  //     }
+                  //   } else {
+                  //     devtools.log("reached here 4");
+                  //     Util.dismiss();
+                  //   }
+                  // } else {
+                  //   Util.showErrorSnackBar("Sign on both fields");
+                  // }
                 },
                 splashRadius: 20.h,
                 icon: const Icon(

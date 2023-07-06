@@ -70,7 +70,10 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
                     Icons.arrow_back,
                     color: foregroundColor ?? AppColors.white,
                   ),
-                  onPressed: leadingOnTap ?? () => Get.back(),
+                  onPressed: leadingOnTap ??
+                      () {
+                        Get.back();
+                      },
                 )
           : const SizedBox(),
     );

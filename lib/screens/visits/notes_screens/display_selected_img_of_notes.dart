@@ -122,6 +122,7 @@ class DisplayNotesImageScreen extends StatelessWidget {
                         "type": "image",
                       },
                     );
+                    Get.find<JobController>().update();
                     // devtools.log(
                     //     "After => ${Get.find<JobController>().selectedJob['Notes'].toString()}");
                   } else {

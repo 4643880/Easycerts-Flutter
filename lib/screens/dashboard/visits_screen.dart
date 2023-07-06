@@ -286,7 +286,7 @@ class _VisitsScreenState extends State<VisitsScreen> {
                               .jobsList
                               .where((p0) => p0["customer"]["name"]
                                   .toLowerCase()
-                                  .contains(value.toLowerCase()))
+                                  .contains(value.trim().toLowerCase()))
                               .toList();
 
                           Get.find<JobController>().listOfSearchedJobs.value =

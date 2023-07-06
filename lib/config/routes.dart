@@ -12,7 +12,6 @@ import 'package:easy_certs/utils/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../screens/both_signature/both_signature.dart';
 import '../screens/no_access/no_access.dart';
 import '../screens/visit_checkout/checkout.dart';
@@ -53,6 +52,7 @@ class Routes {
       transition: Transition.noTransition,
       transitionDuration: const Duration(seconds: 0),
       page: () => TKDismiss(VisitDetail()),
+      binding: BindingsBuilder(() {}),
     ),
     GetPage(
         name: routeImageView,

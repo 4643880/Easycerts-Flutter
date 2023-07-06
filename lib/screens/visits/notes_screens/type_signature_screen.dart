@@ -107,6 +107,7 @@ class TypeSignatureScreen extends StatelessWidget {
                       "type": "image",
                     },
                   );
+                  Get.find<JobController>().update();
                 }
               }
               Util.dismiss();

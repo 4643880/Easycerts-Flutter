@@ -89,7 +89,7 @@ class VisitDetail extends StatelessWidget {
                     ? NotificationDetail()
                     : Detail(),
                 Worksheets(),
-                const Timeline(),
+                Timeline(),
                 Notes(),
                 // const Quotes(),
                 // const PurchaseOrders(),

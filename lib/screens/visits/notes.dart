@@ -32,6 +32,12 @@ class _NotesState extends State<Notes> {
   HawkFabMenuController hawkFabMenuController = HawkFabMenuController();
 
   @override
+  void initState() {
+    devtools.log(Get.find<JobController>().listOfSelectedJobNotes.toString());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // devtools.log(Get.find<JobController>().selectedJob['Notes'].toString());
     return Scaffold(
@@ -108,87 +114,91 @@ class _NotesState extends State<Notes> {
           builder: (jobController) {
             // devtools.log(
             //     "Before => ${Get.find<JobController>().selectedJob['Notes'].toString()}");
-            return (jobController.listOfSelectedJobNotes.isNotEmpty &&
-                    jobController.listOfSelectedJobNotes.length > 0
+            return (jobController.listOfSelectedJobNotes.isNotEmpty
                 ?
                 // jobController.selectedJob['Notes'] != null &&
                 //       jobController.selectedJob['Notes'].length > 0)
                 //   ?
-                Obx(
-                    () => ListView.builder(
-                        padding: EdgeInsets.only(bottom: 80.h),
-                        itemCount: jobController.listOfSelectedJobNotes.length,
-                        // itemCount: jobController.selectedJob['Notes'].length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.only(
-                                top: 8.h,
-                                bottom: 8.h,
-                                right: 16.w,
-                                left: 160.w),
-                            padding: EdgeInsets.only(
-                              top: 16.h,
-                              bottom: 16.h,
-                              right: 10.w,
-                              left: 10.w,
+                ListView.builder(
+                    padding: EdgeInsets.only(bottom: 80.h),
+                    itemCount: jobController.listOfSelectedJobNotes.length,
+                    // itemCount: jobController.selectedJob['Notes'].length,
+                    itemBuilder: (context, index) {
+                      // devtools.log(
+                      //     "=>> ${jobController.listOfSelectedJobNotes[index]}");
+                      return Container(
+                        margin: EdgeInsets.only(
+                            top: 8.h, bottom: 8.h, right: 16.w, left: 160.w),
+                        padding: EdgeInsets.only(
+                          top: 16.h,
+                          bottom: 16.h,
+                          right: 10.w,
+                          left: 10.w,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(kBorderRadius4),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.grey.withOpacity(0.4),
+                              offset: const Offset(0, 2),
+                              blurRadius: kBorderRadius4,
+                              spreadRadius: kBorderRadius4,
                             ),
-                            decoration: BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius:
-                                  BorderRadius.circular(kBorderRadius4),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.grey.withOpacity(0.4),
-                                  offset: const Offset(0, 2),
-                                  blurRadius: kBorderRadius4,
-                                  spreadRadius: kBorderRadius4,
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  jobController.listOfSelectedJobNotes[index]
-                                              ['ref_number'] !=
-                                          null
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              jobController.listOfSelectedJobNotes[index]
+                                          ['ref_number'] !=
+                                      null
+                                  ? jobController.listOfSelectedJobNotes[index]
+                                              ['name'] !=
+                                          "Super Admin"
                                       ? "You(${jobController.listOfSelectedJobNotes[index]['ref_number'] ?? " "})"
-                                      : "",
-                                  textAlign: TextAlign.right,
-                                  style: kTextStyle12Normal,
-                                ),
-                                if (jobController.listOfSelectedJobNotes[index]
-                                            ['url'] !=
-                                        null &&
+                                      : "Super Admin(${jobController.listOfSelectedJobNotes[index]['ref_number'] ?? " "})"
+                                  : "",
+                              textAlign: TextAlign.right,
+                              style: kTextStyle12Normal,
+                            ),
+                            if (jobController.listOfSelectedJobNotes[index]
+                                        ['url'] !=
+                                    null &&
+                                jobController.listOfSelectedJobNotes[index]
+                                        ['url']
+                                    .toString()
+                                    .isNotEmpty)
+                              CustomNotesDisplay(
+                                url: jobController.listOfSelectedJobNotes[index]
+                                    ['url'],
+                                type: jobController
+                                    .listOfSelectedJobNotes[index]['type'],
+                                name:
                                     jobController.listOfSelectedJobNotes[index]
-                                            ['url']
-                                        .toString()
-                                        .isNotEmpty)
-                                  CustomNotesDisplay(
-                                    url: jobController
-                                        .listOfSelectedJobNotes[index]['url'],
-                                    type: jobController
-                                        .listOfSelectedJobNotes[index]['type'],
-                                    name: jobController
-                                                .listOfSelectedJobNotes[index]
                                             ['notes'] ??
                                         "",
-                                  ),
-                                Text(
-                                  jobController.listOfSelectedJobNotes[index]
-                                          ['notes'] ??
-                                      "",
-                                  textAlign: TextAlign.right,
-                                  style: kTextStyle8Normal.copyWith(
-                                    color: AppColors.primary,
-                                  ),
+                              ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                top: 4.r,
+                              ),
+                              child: Text(
+                                jobController.listOfSelectedJobNotes[index]
+                                        ['notes'] ??
+                                    "",
+                                textAlign: TextAlign.right,
+                                style: kTextStyle11Normal.copyWith(
+                                  color: AppColors.primary,
                                 ),
-                              ],
+                              ),
                             ),
-                          );
-                        }),
-                  )
+                          ],
+                        ),
+                      );
+                    })
                 : CustomEmptyWidget(text: "No Notes Available"));
           },
         ),

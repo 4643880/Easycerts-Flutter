@@ -122,4 +122,11 @@ class AppTexts {
   static const String hiveCurrentWorkingUrl = "hiveCurrentWorkingUrl";
   static const String hiveWorkSpaceDataBoxName = "hiveWorkSpaceDataBoxName";
   static const String hiveKeyOfWorkSpaceData = "hiveKeyOfWorkSpace";
+  static const String hiveKeyOfTimelineList = "hiveKeyOfTimelineList";
+  static const String hiveTimeOfTimeline = "hiveTimeOfTimeline";
+  static const String hiveStartTravelling = "hiveStartTravelling";
+  static const String hiveKeyOfWorkTimeList = "hiveKeyOfWorkTimeList";
+  static const String hiveWorkTimeOfTimeline = "hiveWorkTimeOfTimeline";
+  static const String hiveStartJobVisit = "hiveStartJobVisit";
+  static const String hivePauseJobVisit = "hivePauseJobVisit";
 }

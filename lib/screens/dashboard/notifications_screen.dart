@@ -34,6 +34,29 @@ class _NotificationScreenState extends State<NotificationScreen> {
     await notificationController.get();
   }
 
+  onTap(int index) async {
+    NotificationController notificationController =
+        Get.find<NotificationController>();
+    JobController jobController = Get.find();
+    jobController.changeSelectedJob(
+        notificationController.notificationList[index].jobvisit?.toJson() ??
+            {});
+    notificationController.fromNotificationScreen.value = true;
+
+    if (notificationController.notificationList[index].jobattachment == null ||
+        notificationController.notificationList[index].jobattachment?.notes ==
+            null) {
+      Get.toNamed(routeVisitDetail);
+    } else {
+      // devtools.log("This is else part");
+    }
+
+    // Api markMessageAsRead
+    await Get.find<NotificationController>().notificationReadMark(
+        notificationController.notificationList[index].id.toString());
+    await notificationController.get();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<NotificationController>(
@@ -57,21 +80,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       children: [
                         InkWell(
                           onTap: () async {
-                            JobController jobController = Get.find();
-                            jobController.changeSelectedJob(
-                                notificationController
-                                        .notificationList[index].jobvisit
-                                        ?.toJson() ??
-                                    {});
-                            notificationController
-                                .fromNotificationScreen.value = true;
-                            Get.toNamed(routeVisitDetail);
-                            // Api markMessageAsRead
-                            await Get.find<NotificationController>()
-                                .notificationReadMark(notificationController
-                                    .notificationList[index].id
-                                    .toString());
-                            await notificationController.get();
+                            onTap(index);
                           },
                           child: Padding(
                             padding: EdgeInsets.only(
@@ -176,23 +185,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   ),
                                   IconButton(
                                     onPressed: () async {
-                                      JobController jobController = Get.find();
-                                      jobController.changeSelectedJob(
-                                          notificationController
-                                                  .notificationList[index]
-                                                  .jobvisit
-                                                  ?.toJson() ??
-                                              {});
-                                      notificationController
-                                          .fromNotificationScreen.value = true;
-                                      Get.toNamed(routeVisitDetail);
-                                      // Api markMessageAsRead
-                                      await Get.find<NotificationController>()
-                                          .notificationReadMark(
-                                              notificationController
-                                                  .notificationList[index].id
-                                                  .toString());
-                                      await notificationController.get();
+                                      onTap(index);
                                     },
                                     splashRadius: kBorderRadius20,
                                     icon: Icon(

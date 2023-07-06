@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 import '../../controller/auth_controller.dart';
 import '../../helper/app_colors.dart';
 import '../../theme/text_styles.dart';
@@ -13,8 +12,6 @@ import '../components/custom_divider.dart';
 import '../components/custom_two_text.dart';
 
 class Timeline extends StatelessWidget {
-  const Timeline({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<JobController>(builder: (jobController) {
@@ -30,14 +27,14 @@ class Timeline extends StatelessWidget {
             ),
             CustomTwoText(
               first: AppTexts.timeToReachSite,
-              second: "19 min : 14 sec",
-              applyFlex: true,
+              second: "19 min : 24 sec",
+              applyFlex: false,
               applyPadding: true,
             ),
             CustomTwoText(
               first: AppTexts.workTime,
-              second: "00 min : 00 sec",
-              applyFlex: true,
+              second: "50 min : 00 sec",
+              applyFlex: false,
               applyPadding: true,
             ),
             SizedBox(

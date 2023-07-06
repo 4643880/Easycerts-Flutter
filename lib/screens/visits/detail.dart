@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:easy_certs/constants.dart';
 import 'package:easy_certs/controller/job_controller.dart';
+import 'package:easy_certs/utils/util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -235,12 +236,20 @@ class _DetailState extends State<Detail> {
                   ),
                 IconButton(
                   onPressed: () {
-                    if (jobController.selectedJob['customer'] != null) {
+                    if (jobController.selectedJob['customer']['phone_number'] !=
+                            null &&
+                        jobController.selectedJob['customer']['phone_number'] !=
+                            "") {
                       List<String> recepientsList = [
                         jobController.selectedJob['customer']['phone_number']
                             .toString(),
                       ];
                       launchSendSMS("Hello,", recepientsList);
+                    } else {
+                      Util.showSnackBarBottom(
+                        "Phone Number",
+                        "Phone Number can't be empty.",
+                      );
                     }
                   },
                   splashRadius: 20.h,
@@ -252,12 +261,18 @@ class _DetailState extends State<Detail> {
                 ),
                 IconButton(
                   onPressed: () {
-                    if (jobController.selectedJob['customer'] != null) {
-                      devtools.log(jobController.selectedJob['customer']
-                          ['phone_number']);
+                    if (jobController.selectedJob['customer']['phone_number'] !=
+                            null &&
+                        jobController.selectedJob['customer']['phone_number'] !=
+                            "") {
                       launchCaller(jobController.selectedJob['customer']
                               ['phone_number'] ??
                           "");
+                    } else {
+                      Util.showSnackBarBottom(
+                        "Phone Number",
+                        "Phone Number can't be empty.",
+                      );
                     }
                   },
                   splashRadius: 20.h,
