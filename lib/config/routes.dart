@@ -1,3 +1,8 @@
+import 'package:easy_certs/controller/job_controller.dart';
+import 'package:easy_certs/controller/timeToReachSite_controller.dart';
+import 'package:easy_certs/controller/workTime_controller.dart';
+import 'package:easy_certs/helper/app_texts.dart';
+import 'package:easy_certs/helper/hive_boxes.dart';
 import 'package:easy_certs/screens/authentication/login_screen.dart';
 import 'package:easy_certs/screens/dashboard/dashboard.dart';
 import 'package:easy_certs/screens/image_view/image_view.dart';
@@ -17,6 +22,7 @@ import '../screens/no_access/no_access.dart';
 import '../screens/visit_checkout/checkout.dart';
 import '../screens/visits/worksheets_detail/worksheets_detail_screen.dart';
 import '../utils/keyboard_dismiss.dart';
+import 'dart:developer' as devtools show log;
 
 const routeSplash = '/routeSplash';
 const routeLogin = '/routeLogin';
@@ -52,7 +58,77 @@ class Routes {
       transition: Transition.noTransition,
       transitionDuration: const Duration(seconds: 0),
       page: () => TKDismiss(VisitDetail()),
-      binding: BindingsBuilder(() {}),
+      binding: BindingsBuilder(() {
+        // =================== Time to Reach Site Starts Here ========================
+        Get.put(
+          TimeToReachSiteController(),
+        );
+        final data = Boxes.getTimerModelBox().get(AppTexts.hiveTimer);
+
+        if (data?.id ==
+            Get.find<JobController>().selectedJob["id"].toString()) {
+          if (data?.endTime == null) {
+            if (data?.startTime != null) {
+              Duration difference = DateTime.now().difference(data!.startTime!);
+              Get.find<TimeToReachSiteController>().myDuration.value =
+                  difference;
+              Get.find<TimeToReachSiteController>().startTimer();
+              Get.find<TimeToReachSiteController>().update();
+            }
+          }
+          if (data?.endTime != null) {
+            Duration difference = data!.endTime!.difference(data.startTime!);
+            Get.find<TimeToReachSiteController>().myDuration.value = difference;
+            Get.find<TimeToReachSiteController>().update();
+          }
+
+          devtools.log("Start Time => ${data?.startTime.toString()}");
+          devtools.log("End Time => ${data?.endTime.toString()}");
+        }
+
+        // =================== Work Time Starts Here ========================
+        Get.put(
+          WorkTimeController(),
+        );
+        final workTimedata =
+            Boxes.getWorkTimeModelBox().get(AppTexts.hiveWorkTime);
+
+        if (workTimedata?.id ==
+            Get.find<JobController>().selectedJob["id"].toString()) {
+          if (workTimedata?.endTime == null) {
+            if (workTimedata?.pauseTime == null) {
+              if (workTimedata?.startTime != null) {
+                Duration difference =
+                    DateTime.now().difference(workTimedata!.startTime!);
+                Get.find<WorkTimeController>().myDuration.value = difference;
+                Get.find<WorkTimeController>().startTimer();
+                Get.find<WorkTimeController>().update();
+              }
+            }
+          }
+          if (workTimedata?.pauseTime != null) {
+            Duration difference =
+                workTimedata!.pauseTime!.difference(workTimedata.startTime!);
+            Get.find<WorkTimeController>().myDuration.value = difference;
+            Get.find<WorkTimeController>().update();
+          }
+          if (workTimedata?.endTime != null) {
+            Duration difference =
+                workTimedata!.endTime!.difference(workTimedata.startTime!);
+            Get.find<WorkTimeController>().myDuration.value = difference;
+            Get.find<WorkTimeController>().update();
+          }
+          devtools.log(
+            "Work Time Start Time => ${workTimedata?.startTime.toString()}",
+          );
+          devtools.log(
+            "Work Time Pause Time => ${workTimedata?.pauseTime.toString()}",
+          );
+          devtools.log(
+            "Work Time End Time => ${workTimedata?.endTime.toString()}",
+          );
+        }
+      }),
     ),
     GetPage(
         name: routeImageView,

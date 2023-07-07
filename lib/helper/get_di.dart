@@ -1,5 +1,8 @@
 import 'package:easy_certs/controller/notes_controller.dart';
 import 'package:easy_certs/controller/splash_controller.dart';
+import 'package:easy_certs/controller/timeToReachSite_controller.dart';
+import 'package:easy_certs/controller/workTime_controller.dart';
+import 'package:easy_certs/model/timer_model.dart';
 import 'package:easy_certs/model/worksheet_data_submit_model.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -34,6 +37,18 @@ Future<void> init() async {
   await Hive.openBox(AppTexts.hiveCurrentWorkingUrl);
   await Hive.openBox(AppTexts.hiveWorkSpaceDataBoxName);
   await Hive.openBox(AppTexts.hiveKeyOfWorkSpaceData);
+
+  // Controller will be here
+  Get.lazyPut(
+    () => TimeToReachSiteController(),
+  );
+  Get.lazyPut(
+    () => WorkTimeController(),
+  );
+
+  Hive.registerAdapter<TimerModel>(TimerModelAdapter());
+  await Hive.openBox<TimerModel>(AppTexts.hiveTimer);
+  await Hive.openBox<TimerModel>(AppTexts.hiveWorkTime);
 
   FlutterNativeSplash.remove();
 }

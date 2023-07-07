@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:easy_certs/controller/workTime_controller.dart';
 import 'package:easy_certs/model/validation_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -210,6 +211,8 @@ class JobController extends GetxController implements GetxService {
         } else {
           if (Get.context != null) {
             Util.dismiss();
+            await Get.find<WorkTimeController>().saveCompleteJobVisitTime();
+            Get.find<WorkTimeController>().stopTimer();
             customDialog(
               context: Get.context!,
               barrierDismissible: false,

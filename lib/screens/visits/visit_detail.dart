@@ -76,6 +76,7 @@ class VisitDetail extends StatelessWidget {
             bottomSheet: showBottomButton.isTrue
                 ? VisitDetailBottomButton(
                     status: jobController.selectedJob['status'] ?? -1,
+                    selectedJob: jobController.selectedJob,
                   )
                 : null,
             body: TabBarView(

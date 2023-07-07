@@ -1,4 +1,5 @@
 import 'package:easy_certs/helper/app_texts.dart';
+import 'package:easy_certs/model/timer_model.dart';
 import 'package:easy_certs/model/worksheet_data_submit_model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -15,4 +16,9 @@ class Boxes {
       Hive.box(AppTexts.hiveWorkSpaceDataBoxName);
   static Box getKeysOfWorkSpaceData() =>
       Hive.box(AppTexts.hiveKeyOfWorkSpaceData);
+
+  static Box<TimerModel> getTimerModelBox() =>
+      Hive.box<TimerModel>(AppTexts.hiveTimer);
+  static Box<TimerModel> getWorkTimeModelBox() =>
+      Hive.box<TimerModel>(AppTexts.hiveTimer);
 }

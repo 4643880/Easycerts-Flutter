@@ -129,4 +129,6 @@ class AppTexts {
   static const String hiveWorkTimeOfTimeline = "hiveWorkTimeOfTimeline";
   static const String hiveStartJobVisit = "hiveStartJobVisit";
   static const String hivePauseJobVisit = "hivePauseJobVisit";
+  static const String hiveTimer = "hiveTimer";
+  static const String hiveWorkTime = "hiveWorkTime";
 }

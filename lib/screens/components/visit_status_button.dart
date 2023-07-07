@@ -1,26 +1,53 @@
 import 'package:easy_certs/config/routes.dart';
 import 'package:easy_certs/controller/auth_controller.dart';
 import 'package:easy_certs/controller/job_controller.dart';
+import 'package:easy_certs/controller/timeToReachSite_controller.dart';
+import 'package:easy_certs/controller/workTime_controller.dart';
 import 'package:easy_certs/helper/app_texts.dart';
+import 'package:easy_certs/helper/hive_boxes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../helper/app_colors.dart';
 import '../../utils/extra_function.dart';
 import '../../utils/util.dart';
 import 'bottom_sheet_button.dart';
 import 'bottom_sheet_two_button.dart';
+import 'dart:developer' as devtools show log;
 
 class VisitDetailBottomButton extends StatelessWidget {
+  RxString getDate = "".obs;
+  Rx<DateTime> selectedDate = DateTime.now().obs;
   VisitDetailBottomButton({
     Key? key,
     required this.status,
+    required this.selectedJob,
   }) : super(key: key);
   int status;
+  dynamic selectedJob;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<JobController>(builder: (jobController) {
+      // Boxes.getWorkTimeModelBox().delete(AppTexts.hiveWorkTime);
+      // Get.find<WorkTimeController>().myDuration.value =
+      //     const Duration(seconds: 0);
+
+      // Get.find<TimeToReachSiteController>().update();
+
+      // Boxes.getTimerModelBox().delete(AppTexts.hiveTimer);
+      // Get.find<TimeToReachSiteController>().myDuration.value =
+      //     const Duration(seconds: 0);
+      // Get.find<TimeToReachSiteController>().update();
+      // devtools.log("Deleted Successfully");
+
+      // final box = Boxes.getTimerModelBox().get(AppTexts.hiveTimer);
+      // devtools.log(box.toString());
+
+      devtools.log("Job Status is =>>> ${status.toString()}");
+      devtools.log("Selected Job =>>> ${selectedJob.toString()}");
+
       switch (status) {
         case 0:
           {
@@ -55,6 +82,12 @@ class VisitDetailBottomButton extends StatelessWidget {
                         authController.token.value,
                       );
                       if (temp) {
+                        jobController.selectedJob['status'] = 4;
+                        await Get.find<TimeToReachSiteController>()
+                            .saveStartTravelTime();
+                        Get.find<TimeToReachSiteController>().startTimer();
+                        loadData();
+                        jobController.update();
                         Util.dismiss();
                       } else {
                         Util.dismiss();
@@ -73,6 +106,12 @@ class VisitDetailBottomButton extends StatelessWidget {
                         authController.token.value,
                       );
                       if (temp) {
+                        jobController.selectedJob['status'] = 4;
+                        await Get.find<TimeToReachSiteController>()
+                            .saveStartTravelTime();
+                        Get.find<TimeToReachSiteController>().startTimer();
+                        loadData();
+                        jobController.update();
                         Util.dismiss();
                       } else {
                         Util.dismiss();
@@ -124,6 +163,12 @@ class VisitDetailBottomButton extends StatelessWidget {
                       authController.token.value,
                     );
                     if (temp) {
+                      jobController.selectedJob["status"] = 5;
+                      jobController.update();
+                      loadData();
+                      await Get.find<TimeToReachSiteController>()
+                          .saveArriveAtSiteTime();
+                      Get.find<TimeToReachSiteController>().stopTimer();
                       Util.dismiss();
                     } else {
                       Util.dismiss();
@@ -172,6 +217,11 @@ class VisitDetailBottomButton extends StatelessWidget {
                       authController.token.value,
                     );
                     if (temp) {
+                      jobController.selectedJob["status"] = 7;
+                      jobController.update();
+                      loadData();
+                      await Get.find<WorkTimeController>().saveStartJobVisit();
+                      Get.find<WorkTimeController>().startTimer();
                       Util.dismiss();
                     } else {
                       Util.dismiss();
@@ -299,6 +349,11 @@ class VisitDetailBottomButton extends StatelessWidget {
                       authController.token.value,
                     );
                     if (temp) {
+                      jobController.selectedJob["status"] = 16;
+                      loadData();
+                      jobController.update();
+                      await Get.find<WorkTimeController>().savePauseJobVisit();
+                      Get.find<WorkTimeController>().stopTimer();
                       Util.dismiss();
                     } else {
                       Util.dismiss();
@@ -374,6 +429,12 @@ class VisitDetailBottomButton extends StatelessWidget {
                       authController.token.value,
                     );
                     if (temp) {
+                      // ==================================================== Pause Job Visit =============
+                      jobController.selectedJob["status"] = 16;
+                      await Get.find<WorkTimeController>().savePauseJobVisit();
+                      Get.find<WorkTimeController>().stopTimer();
+                      loadData();
+                      jobController.update();
                       Util.dismiss();
                     } else {
                       Util.dismiss();
@@ -401,7 +462,7 @@ class VisitDetailBottomButton extends StatelessWidget {
               },
             );
           }
-        case 12:
+        case 12: // ======================================= Accept and Reject =============================
           {
             return BottomSheetTwoButton(
               bgColor: AppColors.white,
@@ -440,6 +501,12 @@ class VisitDetailBottomButton extends StatelessWidget {
                       authController.token.value,
                     );
                     if (temp) {
+                      jobController.selectedJob['status'] = 2;
+                      jobController.pendingJobsList
+                          .removeWhere((element) => element['status'] == 12);
+                      loadData();
+                      jobController.update();
+                      devtools.log("Status Updated Successfully...");
                       Util.dismiss();
                     } else {
                       Util.dismiss();
@@ -489,6 +556,23 @@ class VisitDetailBottomButton extends StatelessWidget {
                       authController.token.value,
                     );
                     if (temp) {
+                      jobController.selectedJob["status"] = 11;
+                      jobController.update();
+                      loadData();
+                      final workTimedata = Boxes.getWorkTimeModelBox()
+                          .get(AppTexts.hiveWorkTime);
+                      if (workTimedata?.pauseTime != null) {
+                        Duration difference = workTimedata!.pauseTime!
+                            .difference(workTimedata.startTime!);
+                        Get.find<WorkTimeController>().myDuration.value =
+                            difference;
+                        Get.find<WorkTimeController>().update();
+                        Get.find<WorkTimeController>().startTimer();
+
+                        // Will Start later because old value of pause an start will be remove and will assign new start value
+                        await Get.find<WorkTimeController>()
+                            .saveStartJobVisit(duration: difference);
+                      }
                       Util.dismiss();
                     } else {
                       Util.dismiss();
@@ -508,5 +592,39 @@ class VisitDetailBottomButton extends StatelessWidget {
           }
       }
     });
+  }
+
+  Future loadData() async {
+    AuthController authController = Get.find();
+    // Code For Shedule Apis
+    Util.showLoading("Fetching Data");
+
+    // devtools.log(selectedDate.value.toString());
+    var dateForApi = DateFormat('MM-dd-yyyy')
+        .format(selectedDate.value)
+        .toString()
+        .replaceAll('-', "/");
+    getDate.value = dateForApi;
+
+    // devtools.log(selectedDate.value.toString());
+    // Calling Three Apis
+    // AuthController authController = Get.find();
+    await Future.wait([
+      Get.find<JobController>().getPendingJobList(
+        "12",
+        getDate.value,
+        authController.token.value,
+      ),
+      Get.find<JobController>().getOngoingJobList(
+        getDate.value,
+        authController.token.value,
+      ),
+      Get.find<JobController>().getCompletedJobList(
+        "1",
+        getDate.value,
+        authController.token.value,
+      ),
+    ]);
+    Util.dismiss();
   }
 }
