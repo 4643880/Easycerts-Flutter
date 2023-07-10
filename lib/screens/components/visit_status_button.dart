@@ -5,10 +5,10 @@ import 'package:easy_certs/controller/timeToReachSite_controller.dart';
 import 'package:easy_certs/controller/workTime_controller.dart';
 import 'package:easy_certs/helper/app_texts.dart';
 import 'package:easy_certs/helper/hive_boxes.dart';
+import 'package:easy_certs/model/timer_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 import '../../helper/app_colors.dart';
 import '../../utils/extra_function.dart';
 import '../../utils/util.dart';
@@ -33,10 +33,14 @@ class VisitDetailBottomButton extends StatelessWidget {
       // Boxes.getWorkTimeModelBox().delete(AppTexts.hiveWorkTime);
       // Get.find<WorkTimeController>().myDuration.value =
       //     const Duration(seconds: 0);
-
       // Get.find<TimeToReachSiteController>().update();
 
-      // Boxes.getTimerModelBox().delete(AppTexts.hiveTimer);
+      List<TimerModel>? listOfData = Boxes.getTimerModelBox().values.toList();
+      List<TimerModel>? listOfData1 =
+          Boxes.getWorkTimeModelBox().values.toList();
+      // Boxes.getTimerModelBox().clear();
+      // Boxes.getWorkTimeModelBox().clear();
+
       // Get.find<TimeToReachSiteController>().myDuration.value =
       //     const Duration(seconds: 0);
       // Get.find<TimeToReachSiteController>().update();
@@ -46,7 +50,9 @@ class VisitDetailBottomButton extends StatelessWidget {
       // devtools.log(box.toString());
 
       devtools.log("Job Status is =>>> ${status.toString()}");
-      devtools.log("Selected Job =>>> ${selectedJob.toString()}");
+      devtools.log("List of Time to Site DB =>>> ${listOfData.toString()}");
+      devtools.log("List of Work Time DB =>>> ${listOfData1.toString()}");
+      // devtools.log("Selected Job =>>> ${selectedJob.toString()}");
 
       switch (status) {
         case 0:
@@ -559,11 +565,22 @@ class VisitDetailBottomButton extends StatelessWidget {
                       jobController.selectedJob["status"] = 11;
                       jobController.update();
                       loadData();
-                      final workTimedata = Boxes.getWorkTimeModelBox()
-                          .get(AppTexts.hiveWorkTime);
+                      final id = Get.find<JobController>()
+                          .selectedJob["id"]
+                          .toString();
+                      List<TimerModel>? workTimedataList =
+                          Boxes.getWorkTimeModelBox().values.toList();
+                      TimerModel? workTimedata;
+                      workTimedataList.forEach((element) {
+                        if (element.id == id) {
+                          workTimedata = element;
+                          Get.find<WorkTimeController>().update();
+                        }
+                      });
+
                       if (workTimedata?.pauseTime != null) {
                         Duration difference = workTimedata!.pauseTime!
-                            .difference(workTimedata.startTime!);
+                            .difference(workTimedata!.startTime!);
                         Get.find<WorkTimeController>().myDuration.value =
                             difference;
                         Get.find<WorkTimeController>().update();

@@ -3,6 +3,7 @@ import 'package:easy_certs/controller/timeToReachSite_controller.dart';
 import 'package:easy_certs/controller/workTime_controller.dart';
 import 'package:easy_certs/helper/app_texts.dart';
 import 'package:easy_certs/helper/hive_boxes.dart';
+import 'package:easy_certs/model/timer_model.dart';
 import 'package:easy_certs/screens/authentication/login_screen.dart';
 import 'package:easy_certs/screens/dashboard/dashboard.dart';
 import 'package:easy_certs/screens/image_view/image_view.dart';
@@ -63,11 +64,23 @@ class Routes {
         Get.put(
           TimeToReachSiteController(),
         );
-        final data = Boxes.getTimerModelBox().get(AppTexts.hiveTimer);
+        List<TimerModel>? listOfData = Boxes.getTimerModelBox().values.toList();
+
+        TimerModel? data;
+        listOfData.forEach((element) {
+          if (element.id ==
+              Get.find<JobController>().selectedJob["id"].toString()) {
+            data = element;
+          }
+        });
+
+        Future.delayed(const Duration(seconds: 1));
 
         if (data?.id ==
             Get.find<JobController>().selectedJob["id"].toString()) {
           if (data?.endTime == null) {
+            devtools.log(
+                '*************************** 5555555555 ********************************');
             if (data?.startTime != null) {
               Duration difference = DateTime.now().difference(data!.startTime!);
               Get.find<TimeToReachSiteController>().myDuration.value =
@@ -77,8 +90,11 @@ class Routes {
             }
           }
           if (data?.endTime != null) {
-            Duration difference = data!.endTime!.difference(data.startTime!);
+            devtools.log(
+                '************************ 66666666 ***********************************');
+            Duration difference = data!.endTime!.difference(data!.startTime!);
             Get.find<TimeToReachSiteController>().myDuration.value = difference;
+            Get.find<TimeToReachSiteController>().stopTimer();
             Get.find<TimeToReachSiteController>().update();
           }
 
@@ -90,8 +106,21 @@ class Routes {
         Get.put(
           WorkTimeController(),
         );
-        final workTimedata =
-            Boxes.getWorkTimeModelBox().get(AppTexts.hiveWorkTime);
+
+        List<TimerModel>? listOfData2 =
+            Boxes.getWorkTimeModelBox().values.toList();
+
+        TimerModel? workTimedata;
+        listOfData2.forEach((element) {
+          if (element.id ==
+              Get.find<JobController>().selectedJob["id"].toString()) {
+            workTimedata = element;
+          }
+        });
+
+        Future.delayed(const Duration(seconds: 1));
+        // final workTimedata =
+        //     Boxes.getWorkTimeModelBox().get(AppTexts.hiveWorkTime);
 
         if (workTimedata?.id ==
             Get.find<JobController>().selectedJob["id"].toString()) {
@@ -108,13 +137,13 @@ class Routes {
           }
           if (workTimedata?.pauseTime != null) {
             Duration difference =
-                workTimedata!.pauseTime!.difference(workTimedata.startTime!);
+                workTimedata!.pauseTime!.difference(workTimedata!.startTime!);
             Get.find<WorkTimeController>().myDuration.value = difference;
             Get.find<WorkTimeController>().update();
           }
           if (workTimedata?.endTime != null) {
             Duration difference =
-                workTimedata!.endTime!.difference(workTimedata.startTime!);
+                workTimedata!.endTime!.difference(workTimedata!.startTime!);
             Get.find<WorkTimeController>().myDuration.value = difference;
             Get.find<WorkTimeController>().update();
           }

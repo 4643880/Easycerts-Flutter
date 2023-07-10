@@ -14,18 +14,33 @@ class TimeToReachSiteController extends GetxController {
   Future<void> saveStartTravelTime() async {
     final id = Get.find<JobController>().selectedJob["id"].toString();
     final data = TimerModel(id: id, startTime: DateTime.now());
-    final box = await Boxes.getTimerModelBox().put(AppTexts.hiveTimer, data);
+    final box = await Boxes.getTimerModelBox().add(data);
     await data.save();
+
+    update();
     // devtools.log(box.toString());
     devtools.log("Saved Successfully");
   }
 
   Future<void> saveArriveAtSiteTime() async {
     final id = Get.find<JobController>().selectedJob["id"].toString();
-    final olddata = Boxes.getTimerModelBox().get(AppTexts.hiveTimer);
+    List<TimerModel> olddataList = Boxes.getTimerModelBox().values.toList();
+    TimerModel? olddata;
+    olddataList.forEach((element) {
+      if (element.id == id) {
+        olddata = element;
+        update();
+      }
+    });
+
+    olddataList.removeWhere((element) => element.id == id);
+
     final data = TimerModel(
-        id: id, startTime: olddata?.startTime, endTime: DateTime.now());
-    final box = await Boxes.getTimerModelBox().put(AppTexts.hiveTimer, data);
+      id: id,
+      startTime: olddata?.startTime,
+      endTime: DateTime.now(),
+    );
+    final box = await Boxes.getTimerModelBox().add(data);
     await data.save();
     // devtools.log(box.toString());
     devtools.log("Saved Successfully");
@@ -56,5 +71,11 @@ class TimeToReachSiteController extends GetxController {
       myDuration.value = Duration(seconds: seconds);
     }
     update();
+  }
+
+  @override
+  void onClose() {
+    countdownTimer?.cancel();
+    super.onClose();
   }
 }

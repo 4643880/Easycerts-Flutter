@@ -20,5 +20,5 @@ class Boxes {
   static Box<TimerModel> getTimerModelBox() =>
       Hive.box<TimerModel>(AppTexts.hiveTimer);
   static Box<TimerModel> getWorkTimeModelBox() =>
-      Hive.box<TimerModel>(AppTexts.hiveTimer);
+      Hive.box<TimerModel>(AppTexts.hiveWorkTime);
 }
