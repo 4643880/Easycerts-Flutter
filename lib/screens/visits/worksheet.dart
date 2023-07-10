@@ -86,6 +86,12 @@ class _WorksheetsState extends State<Worksheets> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<JobController>(builder: (jobController) {
+      final li = jobController.selectedJob['worksheets'] as List;
+      final submittedList = li
+          .where(
+            (element) => element["is_submitted"] == true,
+          )
+          .toList();
       return DefaultTabController(
         length: 3,
         child: Scaffold(
@@ -276,12 +282,10 @@ class _WorksheetsState extends State<Worksheets> {
                 },
                 child: ListView(
                   children: [
-                    (jobController.selectedJob['worksheets'] != null &&
-                            jobController.selectedJob['worksheets'].isNotEmpty)
+                    (submittedList != null && submittedList.isNotEmpty)
                         ? ListView.builder(
                             shrinkWrap: true,
-                            itemCount:
-                                jobController.selectedJob['worksheets'].length,
+                            itemCount: submittedList.length,
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: EdgeInsets.symmetric(
@@ -292,8 +296,7 @@ class _WorksheetsState extends State<Worksheets> {
                                   onTap: () {
                                     onTap(
                                       jobController,
-                                      jobController.selectedJob['worksheets']
-                                          [index],
+                                      submittedList[index],
                                     );
                                   },
                                   child: Column(
@@ -303,17 +306,14 @@ class _WorksheetsState extends State<Worksheets> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              jobController
-                                                      .selectedJob['worksheets']
-                                                  [index]['name'],
+                                              submittedList[index]['name'],
                                             ),
                                           ),
                                           IconButton(
                                             onPressed: () {
                                               onTap(
                                                 jobController,
-                                                jobController.selectedJob[
-                                                    'worksheets'][index],
+                                                submittedList[index],
                                               );
                                             },
                                             icon: Icon(

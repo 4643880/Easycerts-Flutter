@@ -5,6 +5,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_certs/controller/job_controller.dart';
 import 'package:easy_certs/helper/app_texts.dart';
 import 'package:easy_certs/model/validation_model.dart';
+import 'package:easy_certs/model/worksheet_data_submit_model.dart';
 import 'package:easy_certs/screens/components/large_button.dart';
 import 'package:easy_certs/utils/util.dart';
 import 'package:flutter/foundation.dart';
@@ -32,6 +33,40 @@ Future<void> getPermission() async {
   } else {
     // devtools.log("granted");
   }
+}
+
+String? checkValueIsAvailable(dynamic key) {
+  dynamic tempvalue;
+  for (dynamic element
+      in Get.find<JobController>().worksheetDataSubmitModelList) {
+    if (element.f_name == key) {
+      tempvalue = element.f_value;
+      break;
+    }
+  }
+  return tempvalue;
+}
+
+updateWorkSheetModelOrAddNewModel(WorksheetDataSubmitModel model) {
+  final li = Get.find<JobController>().worksheetDataSubmitModelList;
+  if (li.isNotEmpty) {
+    for (int i = 0; i < li.length; i++) {
+      if (li[i].f_name == model.f_name) {
+        Get.find<JobController>()
+            .worksheetDataSubmitModelList
+            .removeWhere((element) => model.f_name == element.f_name);
+        Get.find<JobController>().worksheetDataSubmitModelList.add(model);
+        Get.find<JobController>().update();
+      } else {
+        Get.find<JobController>().worksheetDataSubmitModelList.add(model);
+        Get.find<JobController>().update();
+      }
+    }
+  } else {
+    Get.find<JobController>().worksheetDataSubmitModelList.add(model);
+    Get.find<JobController>().update();
+  }
+  Get.find<JobController>().update();
 }
 
 customDialogForValidationError({
