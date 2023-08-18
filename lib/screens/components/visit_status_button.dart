@@ -49,9 +49,9 @@ class VisitDetailBottomButton extends StatelessWidget {
       // final box = Boxes.getTimerModelBox().get(AppTexts.hiveTimer);
       // devtools.log(box.toString());
 
-      devtools.log("Job Status is =>>> ${status.toString()}");
-      devtools.log("List of Time to Site DB =>>> ${listOfData.toString()}");
-      devtools.log("List of Work Time DB =>>> ${listOfData1.toString()}");
+      // devtools.log("Job Status is =>>> ${status.toString()}");
+      // devtools.log("List of Time to Site DB =>>> ${listOfData.toString()}");
+      // devtools.log("List of Work Time DB =>>> ${listOfData1.toString()}");
       // devtools.log("Selected Job =>>> ${selectedJob.toString()}");
 
       switch (status) {

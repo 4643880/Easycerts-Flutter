@@ -131,4 +131,8 @@ class AppTexts {
   static const String hivePauseJobVisit = "hivePauseJobVisit";
   static const String hiveTimer = "hiveTimer";
   static const String hiveWorkTime = "hiveWorkTime";
+  static const String hiveWorkSpaceSubmittedDataBoxName =
+      "hiveWorkSpaceSubmittedDataBoxName";
+  static const String hiveKeyOfSubmittedWorkSpaceData =
+      "hiveWorkSpaceSubmittedDataBoxName";
 }

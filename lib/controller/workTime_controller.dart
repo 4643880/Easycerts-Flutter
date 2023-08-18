@@ -3,6 +3,7 @@ import 'package:easy_certs/controller/job_controller.dart';
 import 'package:easy_certs/helper/app_texts.dart';
 import 'package:easy_certs/helper/hive_boxes.dart';
 import 'package:easy_certs/model/timer_model.dart';
+import 'package:easy_certs/repository/timeline_repo.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'dart:developer' as devtools show log;
@@ -113,15 +114,32 @@ class WorkTimeController extends GetxController {
     update();
   }
 
-  void setCountDown() {
+  void setCountDown() async {
     const increaseSecondsBy = 1;
     final seconds = myDuration.value.inSeconds + increaseSecondsBy;
     if (seconds < 0) {
       countdownTimer1!.cancel();
     } else {
+      int a = 10;
+      int durationInSeconds = Duration(seconds: seconds).inSeconds;
+      Duration duration = Duration(seconds: seconds);
+      if (durationInSeconds % a == 0) {
+        postWorkedTime(
+          Get.find<JobController>().selectedJob["id"].toString(),
+          duration.inMilliseconds,
+        );
+      }
       myDuration.value = Duration(seconds: seconds);
     }
     update();
+  }
+
+  Future<void> postWorkedTime(String jobId, int duration) async {
+    dynamic check =
+        await TimelineRepo().postWorkedTime(id: jobId, duration: duration);
+    if (check != null) {
+      devtools.log("Posted Work Time Duration Successfully");
+    }
   }
 
   @override

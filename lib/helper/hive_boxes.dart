@@ -21,4 +21,9 @@ class Boxes {
       Hive.box<TimerModel>(AppTexts.hiveTimer);
   static Box<TimerModel> getWorkTimeModelBox() =>
       Hive.box<TimerModel>(AppTexts.hiveWorkTime);
+
+  static Box getSubmittedWorkSpaceData() =>
+      Hive.box(AppTexts.hiveWorkSpaceSubmittedDataBoxName);
+  static Box getKeysOfSubmittedWorkSpaceData() =>
+      Hive.box(AppTexts.hiveKeyOfSubmittedWorkSpaceData);
 }

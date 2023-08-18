@@ -66,7 +66,7 @@ class TimeToReachSiteController extends GetxController {
     const increaseSecondsBy = 1;
     final seconds = myDuration.value.inSeconds + increaseSecondsBy;
     if (seconds < 0) {
-      countdownTimer!.cancel();
+      countdownTimer?.cancel();
     } else {
       myDuration.value = Duration(seconds: seconds);
     }

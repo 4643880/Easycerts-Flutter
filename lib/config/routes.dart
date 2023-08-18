@@ -52,29 +52,33 @@ class Routes {
         name: routeWorksheetsDetail,
         page: () => const TKDismiss(WorksheetsDetailScreen()),
         binding: BindingsBuilder(() {
-          Util.showLoading("Please Wait From Binding...");
+          // Util.showLoading("Please Wait From Binding...");
         })),
     GetPage(
       name: routeVisitDetail,
       transition: Transition.noTransition,
       transitionDuration: const Duration(seconds: 0),
       page: () => TKDismiss(VisitDetail()),
-      binding: BindingsBuilder(() {
+      binding: BindingsBuilder(() async {
         // =================== Time to Reach Site Starts Here ========================
         Get.put(
           TimeToReachSiteController(),
         );
+        Get.put(
+          WorkTimeController(),
+        );
+
         List<TimerModel>? listOfData = Boxes.getTimerModelBox().values.toList();
 
         TimerModel? data;
-        listOfData.forEach((element) {
+        for (var element in listOfData) {
           if (element.id ==
               Get.find<JobController>().selectedJob["id"].toString()) {
             data = element;
           }
-        });
+        }
 
-        Future.delayed(const Duration(seconds: 1));
+        await Future.delayed(const Duration(seconds: 1));
 
         if (data?.id ==
             Get.find<JobController>().selectedJob["id"].toString()) {
@@ -92,7 +96,7 @@ class Routes {
           if (data?.endTime != null) {
             devtools.log(
                 '************************ 66666666 ***********************************');
-            Duration difference = data!.endTime!.difference(data!.startTime!);
+            Duration difference = data!.endTime!.difference(data.startTime!);
             Get.find<TimeToReachSiteController>().myDuration.value = difference;
             Get.find<TimeToReachSiteController>().stopTimer();
             Get.find<TimeToReachSiteController>().update();
@@ -103,9 +107,6 @@ class Routes {
         }
 
         // =================== Work Time Starts Here ========================
-        Get.put(
-          WorkTimeController(),
-        );
 
         List<TimerModel>? listOfData2 =
             Boxes.getWorkTimeModelBox().values.toList();
@@ -118,7 +119,7 @@ class Routes {
           }
         });
 
-        Future.delayed(const Duration(seconds: 1));
+        await Future.delayed(const Duration(seconds: 1));
         // final workTimedata =
         //     Boxes.getWorkTimeModelBox().get(AppTexts.hiveWorkTime);
 

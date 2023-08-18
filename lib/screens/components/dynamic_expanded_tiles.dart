@@ -20,7 +20,8 @@ class DynamicExpandedTiles extends StatefulWidget {
   State<DynamicExpandedTiles> createState() => _DynamicExpandedTilesState();
 }
 
-class _DynamicExpandedTilesState extends State<DynamicExpandedTiles> {
+class _DynamicExpandedTilesState extends State<DynamicExpandedTiles>
+    with AutomaticKeepAliveClientMixin {
   List myData = [];
   bool isLoading = false;
 
@@ -32,7 +33,7 @@ class _DynamicExpandedTilesState extends State<DynamicExpandedTiles> {
 
   List<dynamic> temporaryList = [];
   getDataFromLocalStorage() async {
-    Util.showLoading("Loading Data...");
+    // Util.showLoading("Loading Data...");
     setState(() {
       isLoading = true;
     });
@@ -46,7 +47,7 @@ class _DynamicExpandedTilesState extends State<DynamicExpandedTiles> {
         isLoading = false;
       });
     }
-    Util.dismiss();
+    // Util.dismiss();
   }
 
   Future funcToFechData() async {
@@ -99,4 +100,7 @@ class _DynamicExpandedTilesState extends State<DynamicExpandedTiles> {
       ],
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

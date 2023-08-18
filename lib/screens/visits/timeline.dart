@@ -50,16 +50,16 @@ class Timeline extends StatelessWidget {
                   CustomTwoText(
                     first: AppTexts.timeToReachSite,
                     second: int.parse(hours) > 0
-                        ? "$hours hrs"
-                        : '' + "$minutes min : $seconds sec",
+                        ? "$hours hrs : $minutes min : $seconds sec"
+                        : "$minutes min : $seconds sec",
                     applyFlex: false,
                     applyPadding: true,
                   ),
                   CustomTwoText(
                     first: AppTexts.workTime,
                     second: int.parse(workTimeHours) > 0
-                        ? "$workTimeHours hrs"
-                        : "" + "$workTimeMinutes min : $workTimeSeconds sec",
+                        ? "$workTimeHours hrs : $workTimeMinutes min : $workTimeSeconds sec"
+                        : "$workTimeMinutes min : $workTimeSeconds sec",
                     applyFlex: false,
                     applyPadding: true,
                   ),

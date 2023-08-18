@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:easy_certs/controller/auth_controller.dart';
 import 'package:easy_certs/controller/job_controller.dart';
 import 'package:easy_certs/helper/hive_boxes.dart';
+import 'package:easy_certs/utils/util.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +22,9 @@ class Worksheets extends StatefulWidget {
 
 class _WorksheetsState extends State<Worksheets> {
   Function()? onTap(JobController jobController, dynamic newWorksheet) {
-    jobController.updateSelectedWorksheet(newWorksheet);
+    jobController.updateSelectedWorksheet(
+      newWorksheet,
+    );
     Get.toNamed(routeWorksheetsDetail);
     return null;
   }
@@ -54,14 +57,15 @@ class _WorksheetsState extends State<Worksheets> {
 
   List<dynamic> temporaryList = [];
   getDataFromLocalStorage() async {
+    Util.showLoading("Loading Data...");
     temporaryList.clear();
     await funcToFechData();
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     // devtools.log("2: " + DateTime.now().toString());
     setState(() {
       myData = temporaryList;
     });
-    devtools.log(myData.toString());
+    Util.dismiss();
   }
 
   Future funcToFechData() async {
@@ -70,8 +74,40 @@ class _WorksheetsState extends State<Worksheets> {
     listOfKeys?.forEach((element) async {
       final eachElement = await Boxes.getSavedWorkSpaceData().get(element);
       // devtools.log(eachElement.toString());
-      temporaryList.add(eachElement);
+      if (eachElement["selectedJobId"] ==
+          Get.find<JobController>().selectedJob["id"]) {
+        temporaryList.add(eachElement);
+      }
       // devtools.log("1: " + DateTime.now().toString());
+    });
+  }
+
+  dynamic mySubmittedData;
+  List<dynamic> temporaryList1 = [];
+  getSubmittedDataFromLocalStorage() async {
+    Util.showLoading("Loading Data...");
+    temporaryList1.clear();
+    await funcToFechSubmittedData();
+    await Future.delayed(const Duration(seconds: 1));
+    // devtools.log("2: " + DateTime.now().toString());
+    setState(() {
+      mySubmittedData = temporaryList1;
+    });
+    Util.dismiss();
+  }
+
+  Future funcToFechSubmittedData() async {
+    List? listOfKeys =
+        await Boxes.getKeysOfSubmittedWorkSpaceData().get('keysOfList');
+    // devtools.log(Boxes.getSavedWorkSpaceData().get(listOfKeys![0]).toString());
+    listOfKeys?.forEach((element) async {
+      final eachElement = await Boxes.getSubmittedWorkSpaceData().get(element);
+      // devtools.log(eachElement.toString());
+      if (eachElement["selectedJobId"] ==
+          Get.find<JobController>().selectedJob["id"]) {
+        temporaryList1.add(eachElement);
+      }
+      // devtools.log("each Element: " + eachElement.toString());
     });
   }
 
@@ -79,6 +115,7 @@ class _WorksheetsState extends State<Worksheets> {
   void initState() {
     setState(() {
       getDataFromLocalStorage();
+      getSubmittedDataFromLocalStorage();
     });
     super.initState();
   }
@@ -86,12 +123,13 @@ class _WorksheetsState extends State<Worksheets> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<JobController>(builder: (jobController) {
-      final li = jobController.selectedJob['worksheets'] as List;
-      final submittedList = li
-          .where(
-            (element) => element["is_submitted"] == true,
-          )
-          .toList();
+      // final li = jobController.selectedJob['worksheets'] as List;
+      // final submittedList = li
+      //     .where(
+      //       (element) => element["is_submitted"] == true,
+      //     )
+      //     .toList();
+      // devtools.log(submittedList.toString());
       return DefaultTabController(
         length: 3,
         child: Scaffold(
@@ -133,7 +171,10 @@ class _WorksheetsState extends State<Worksheets> {
                                   vertical: 10.h,
                                 ),
                                 child: InkWell(
-                                  onTap: () {
+                                  onTap: () async {
+                                    Util.showLoading("Please wait...");
+                                    await Future.delayed(
+                                        const Duration(milliseconds: 100));
                                     onTap(
                                       jobController,
                                       jobController.selectedJob['worksheets']
@@ -247,7 +288,7 @@ class _WorksheetsState extends State<Worksheets> {
                                               size: 16.sp,
                                             ),
                                             splashRadius: 25.r,
-                                          )
+                                          ),
                                         ],
                                       ),
                                       SizedBox(
@@ -277,15 +318,16 @@ class _WorksheetsState extends State<Worksheets> {
               // Submitted
               RefreshIndicator(
                 onRefresh: () async {
-                  AuthController authController = Get.find();
-                  await jobController.getJobList(authController.token.value);
+                  // AuthController authController = Get.find();
+                  // await jobController.getJobList(authController.token.value);
+                  await getSubmittedDataFromLocalStorage();
                 },
                 child: ListView(
                   children: [
-                    (submittedList != null && submittedList.isNotEmpty)
+                    (mySubmittedData != null && mySubmittedData.length > 0)
                         ? ListView.builder(
                             shrinkWrap: true,
-                            itemCount: submittedList.length,
+                            itemCount: mySubmittedData.length,
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: EdgeInsets.symmetric(
@@ -296,7 +338,7 @@ class _WorksheetsState extends State<Worksheets> {
                                   onTap: () {
                                     onTap(
                                       jobController,
-                                      submittedList[index],
+                                      mySubmittedData[index]["worksheetData"],
                                     );
                                   },
                                   child: Column(
@@ -306,14 +348,16 @@ class _WorksheetsState extends State<Worksheets> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              submittedList[index]['name'],
+                                              mySubmittedData[index]
+                                                  ["worksheetData"]['name'],
                                             ),
                                           ),
                                           IconButton(
                                             onPressed: () {
                                               onTap(
                                                 jobController,
-                                                submittedList[index],
+                                                mySubmittedData[index]
+                                                    ["worksheetData"],
                                               );
                                             },
                                             icon: Icon(

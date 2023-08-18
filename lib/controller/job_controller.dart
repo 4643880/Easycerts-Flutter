@@ -426,7 +426,8 @@ class JobController extends GetxController implements GetxService {
     }
   }
 
-  Future<bool> uploadFormSignatureWithApi(String token) async {
+  Future<bool> uploadFormSignatureWithApi(String token,
+      {required isLoadingIssueDueToUpdate}) async {
     try {
       if (worksheetSignatureRenderedList.isNotEmpty) {
         for (int i = 0; i < worksheetSignatureRenderedList.length; i++) {
@@ -440,10 +441,10 @@ class JobController extends GetxController implements GetxService {
             }
           }
         }
-        update();
+        isLoadingIssueDueToUpdate == true ? null : update();
         return true;
       } else {
-        update();
+        isLoadingIssueDueToUpdate == true ? null : update();
         return true;
       }
     } catch (e) {
@@ -455,7 +456,8 @@ class JobController extends GetxController implements GetxService {
     }
   }
 
-  Future<bool> uploadFormImagesWithApi(String token) async {
+  Future<bool> uploadFormImagesWithApi(String token,
+      {required bool isLoadingIssueDueToUpdate}) async {
     try {
       if (worksheetImageRenderedList.isNotEmpty) {
         for (int i = 0; i < worksheetImageRenderedList.length; i++) {
@@ -469,10 +471,10 @@ class JobController extends GetxController implements GetxService {
             }
           }
         }
-        update();
+        isLoadingIssueDueToUpdate == true ? null : update();
         return true;
       } else {
-        update();
+        isLoadingIssueDueToUpdate == true ? null : update();
         return true;
       }
     } catch (e) {
@@ -485,7 +487,8 @@ class JobController extends GetxController implements GetxService {
   }
 
   Future<bool> submitWorkSheetWithApi(String identifier, String token,
-      int jobId, List<WorksheetDataSubmitModel> list) async {
+      int jobId, List<WorksheetDataSubmitModel> list,
+      {required bool isLoadingIssueDueToUpdate}) async {
     try {
       dynamic check = await JobRepo().submitWorkSheetWithApi(
           identifier,
@@ -495,10 +498,10 @@ class JobController extends GetxController implements GetxService {
           worksheetImageRenderedList,
           worksheetSignatureRenderedList);
       if (check != null) {
-        update();
+        isLoadingIssueDueToUpdate == true ? null : update();
         return true;
       }
-      update();
+      isLoadingIssueDueToUpdate == true ? null : update();
       return false;
     } catch (e) {
       if (kDebugMode) {
@@ -509,9 +512,10 @@ class JobController extends GetxController implements GetxService {
     }
   }
 
-  updateSelectedWorksheet(Map<dynamic, dynamic> newWorksheet) {
+  updateSelectedWorksheet(Map<dynamic, dynamic> newWorksheet,
+      [bool? isLoadingIssueDueToUpdate]) {
     selectedWorksheet.value = newWorksheet;
-    update();
+    isLoadingIssueDueToUpdate == true ? null : update();
   }
 
   addWorksheetDataSubmitModelList(
@@ -520,9 +524,9 @@ class JobController extends GetxController implements GetxService {
     update();
   }
 
-  clearWorksheetDataSubmitModelList() {
+  clearWorksheetDataSubmitModelList({required bool isLoadingIssueDueToUpdate}) {
     worksheetDataSubmitModelList.clear();
-    update();
+    isLoadingIssueDueToUpdate == true ? null : update();
   }
 
   addWorksheetImageRenderedList(
@@ -594,7 +598,7 @@ class JobController extends GetxController implements GetxService {
     update();
   }
 
-  deleteAllSignatureFromDevice() {
+  Future<void> deleteAllSignatureFromDevice() async {
     worksheetSignatureRenderedList.map((element) async {
       await File(element.filePath).delete();
       element.filePath = "";

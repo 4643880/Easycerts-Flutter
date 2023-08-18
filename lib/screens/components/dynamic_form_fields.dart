@@ -66,11 +66,13 @@ class _DynamicFormFieldsState extends State<DynamicFormFields> {
                   height: 10.h,
                 ),
                 InputWithInnerLabel(
-                  initialText: checkValueIsAvailable(widget.fieldKey) == null
-                      ? widget.defaultText.isEmpty
-                          ? null
-                          : widget.defaultText
-                      : checkValueIsAvailable(widget.fieldKey),
+                  initialText:
+                      widget.defaultText.isEmpty ? null : widget.defaultText,
+                  // initialText: checkValueIsAvailable(widget.fieldKey) == null
+                  //     ? widget.defaultText.isEmpty
+                  //         ? null
+                  //         : widget.defaultText
+                  //     : checkValueIsAvailable(widget.fieldKey),
                   onSaved: (String? newValue) {
                     jobController.addWorksheetDataSubmitModelList(
                       WorksheetDataSubmitModel(
@@ -80,21 +82,21 @@ class _DynamicFormFieldsState extends State<DynamicFormFields> {
                       ),
                     );
                   },
-                  onChanged: (newValue) {
-                    WorksheetDataSubmitModel model = WorksheetDataSubmitModel(
-                      f_name: widget.fieldKey,
-                      f_type: widget.type,
-                      f_value: newValue ?? "",
-                    );
-                    updateWorkSheetModelOrAddNewModel(model);
-                    // jobController.addWorksheetDataSubmitModelList(
-                    //   WorksheetDataSubmitModel(
-                    //     f_name: widget.fieldKey,
-                    //     f_type: widget.type,
-                    //     f_value: newValue ?? "",
-                    //   ),
-                    // );
-                  },
+                  // onChanged: (newValue) {
+                  //   WorksheetDataSubmitModel model = WorksheetDataSubmitModel(
+                  //     f_name: widget.fieldKey,
+                  //     f_type: widget.type,
+                  //     f_value: newValue ?? "",
+                  //   );
+                  //   updateWorkSheetModelOrAddNewModel(model);
+                  //   // jobController.addWorksheetDataSubmitModelList(
+                  //   //   WorksheetDataSubmitModel(
+                  //   //     f_name: widget.fieldKey,
+                  //   //     f_type: widget.type,
+                  //   //     f_value: newValue ?? "",
+                  //   //   ),
+                  //   // );
+                  // },
                   validator: (String? value) {
                     Map<String, Object> myMap = {
                       "expandedTileName": widget.expandedTileName,

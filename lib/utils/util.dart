@@ -24,8 +24,8 @@ class Util {
     );
   }
 
-  static void showLoading(String message) {
-    EasyLoading.show(
+  static void showLoading(String message) async {
+    await EasyLoading.show(
       status: message,
       indicator: const CircularProgressIndicator.adaptive(),
       dismissOnTap: false,

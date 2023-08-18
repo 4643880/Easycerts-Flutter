@@ -37,6 +37,8 @@ Future<void> init() async {
   await Hive.openBox(AppTexts.hiveCurrentWorkingUrl);
   await Hive.openBox(AppTexts.hiveWorkSpaceDataBoxName);
   await Hive.openBox(AppTexts.hiveKeyOfWorkSpaceData);
+  await Hive.openBox(AppTexts.hiveKeyOfSubmittedWorkSpaceData);
+  await Hive.openBox(AppTexts.hiveWorkSpaceSubmittedDataBoxName);
 
   // Controller will be here
   Get.lazyPut(
