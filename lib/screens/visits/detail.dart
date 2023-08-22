@@ -164,7 +164,7 @@ class _DetailState extends State<Detail> {
               CustomIconAndText(
                 iconData: Icons.location_on_outlined,
                 text:
-                    "${jobController.selectedJob['site']['postal_code'] ?? ""}${jobController.selectedJob['site']['postal_code'] != null ? "," : ""} ${jobController.selectedJob['site']['address'] ?? ""}${jobController.selectedJob['site']['country'] != null ? "," : ""} ${jobController.selectedJob['site']['country'] ?? ""},",
+                    "${jobController.selectedJob['site']['postal_code'] ?? ""}${(jobController.selectedJob['site']['postal_code']) != null && (jobController.selectedJob['site']['postal_code']) != "" ? "," : ""} ${jobController.selectedJob['site']['address'] ?? ""}${(jobController.selectedJob['site']['country']) != null && (jobController.selectedJob['site']['country']) != "" ? "," : ""} ${jobController.selectedJob['site']['country'] ?? ""}",
               ),
             SizedBox(
               height: 10.h,

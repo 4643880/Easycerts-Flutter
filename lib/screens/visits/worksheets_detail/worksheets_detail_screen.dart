@@ -487,7 +487,7 @@ class _WorksheetsDetailScreenState extends State<WorksheetsDetailScreen>
                   // height: 670.h,
                   height:
                       jobController.selectedWorksheet["is_submitted"] == true
-                          ? 650.h
+                          ? 620.h
                           : 570.h,
                   // color: Colors.red,
                   margin: EdgeInsets.symmetric(horizontal: 10.w),
