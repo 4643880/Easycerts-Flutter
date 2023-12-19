@@ -132,7 +132,7 @@ class _WorksheetsDetailScreenState extends State<WorksheetsDetailScreen>
               jobController.selectedWorksheet['name'],
             ),
           ),
-          bottomSheet: jobController.selectedWorksheet["is_submitted"] == true
+          bottomSheet: jobController.selectedWorksheet["is_submitted"] == false
               ? null
               : BottomSheetTwoButton(
                   onPressed: () async {

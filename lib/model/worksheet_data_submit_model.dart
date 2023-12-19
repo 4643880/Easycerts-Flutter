@@ -18,4 +18,10 @@ class WorksheetDataSubmitModel {
     required this.f_type,
     required this.f_value,
   });
+
+  Map<String, dynamic> toJson() => {
+        "f_name": f_name,
+        "f_type": f_type,
+        "f_value": f_value,
+      };
 }
